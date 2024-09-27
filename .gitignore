@@ -1,0 +1,23 @@
+# created by virtualenv automatically
+.venv/
+
+# Archivos de Python
+__pycache__/
+*.py[cod]
+
+# Archivos de configuración de IDE
+.idea/
+*.iml
+*.sublime-project
+*.sublime-worksapace
+
+# Archivos de entorno
+.env
+.env.*
+
+# Archivos de base de datos
+db.sqlite3
+*.sqlite3
+
+# Archivos de logs
+*.log
