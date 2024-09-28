@@ -1,0 +1,30 @@
+.modal {
+    display: none; /* Inicialmente oculto */
+    position: fixed; /* Mantenerlo en una posición fija */
+    z-index: 1; /* Asegurarse de que esté sobretodo lo demás */
+    left: 0;
+    top: 0;
+    width: 100%; /* Ancho completo */
+    height: 100%; /* Alto completo */
+    overflow: auto; /* Permitir el scroll si es necesario */
+    background-color: rgb(0, 0, 0); /* Color de fondo */
+    background-color: rgba(0, 0, 0, 0.4); /* Fondo semi-transparente */
+}
+
+    /* Mostrar el modal cuando se aplique la clase "show" */
+.modal.show {
+    display: block;
+}
+
+    /* Estilos para el contenido de la ventana modal */
+.modal-content {
+    background-color: #fefefe;
+    margin: 15% auto; /* Centrado vertical y horizontal */
+    padding: 20px;
+    border: 1px solid #888;
+    width: 80%; /* Ancho de la ventana */
+    max-width: 400px; /* Máximo ancho */
+    text-align: center; /* Centrar el texto */
+    border-radius: 5px;
+    box-shadow: rgba(0, 0, 0, 1) 0px 5px 15px 0px;
+}
