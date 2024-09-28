@@ -1,0 +1,187 @@
+{% extends 'SIU/templates_base/datos_personales_base.html' %}
+{% load static %}
+
+{% block title %} SIU Guaraní - Datos censales{% endblock %}
+{% block style %}
+    .imagen_usuario{
+        width: 870px;
+        height: 125px;
+    }
+
+    .edicion_datos_usuario{
+        width: 870px;
+        height: 550px;
+        border: 1px solid #E3E3E3;
+        border-radius: 5px;
+        background: #F5F5F5;
+        margin-bottom: 20px;
+        padding-left: 10px;
+        padding-right: 10px;
+    }
+    .sub_edicion_datos_usuario{
+        width: 848px;
+        height: 960px;
+        line-height: 20px
+    }
+
+    .datos_usuario {
+        width: 848px;
+        height: 65px;
+        display: flex;
+        justify-content: space-between;
+        margin-bottom: 5px;
+    }
+
+    .sub_datos_usuario{
+        width: 413px;
+        height: 65px;
+        box-sizing: border-box;
+    }
+
+    .tabla_familia{
+        width: 848px;
+        height: 257px;
+        border-radius: 5px;
+        border: 1px solid rgb(227, 227, 227);
+        margin-bottom: 20px;
+        padding-left: 10px;
+        padding-right: 10px;
+    }
+
+    .situacion_familiar{
+        width: 826px;
+        height: 205px;
+    }
+    .turno_preferido{
+        width: 848px;
+        height: 117px;
+        border-radius: 5px;
+        border: 1px solid #E3E3E3;
+    }
+
+    .sub_turno_preferido{
+        width: 826px;
+        height: 65px;
+    }
+
+    .no-select {
+        user-select: none; /* Para navegadores modernos */
+        -webkit-user-select: none; /* Para navegadores webkit */
+        -moz-user-select: none; /* Para navegadores Firefox */
+        -ms-user-select: none; /* Para navegadores antiguos de IE */
+        background: #EEEEEE;
+    }
+{% endblock %}
+    {% block titulo_pagina %}Datos personales{% endblock %}
+
+    {% block navegador_datos_personales%}
+        <li id="pagina_actual_links"><a href="{% url 'SIU:datos_censales' %}" class="pagina_actual_texto">Datos personales</a></li>
+        <li><a href="{% url 'SIU:domicilio' %}"  class="li_links">Domicilio</a></li>
+        <li><a href="{% url 'SIU:datos_contacto' %}" class="li_links">Datos de contacto</a></li>
+        <li><a href="{{ url_estudios }}" class="li_links">Estudios</a></li>
+        <li><a href="{{ url_allegados }}" class="li_links">Allegados</a></li>
+        <li><a href="{% url 'SIU:discapacidad' %}" class="li_links">Discapacidad</a></li>
+    {% endblock %}
+
+    {% block content %}
+        <div class="imagen_usuario">
+            <img src="{% static 'SIU/imagenes/logo-usuario.png' %}" alt="foto usuario">
+        </div>
+        <!-- Contenido de forms -->
+        <div class="edicion_datos_usuario">
+            <div class="sub_edicion_datos_usuario">
+                <!--Datos del usuario-->
+                <div class="datos_usuario">
+                    <div class="sub_datos_usuario">
+                        <label for="{{ form_usuario.apellido.id_for_label }}">{{ form_usuario.apellido.label }}</label><br>
+                        {{ form_usuario.apellido }}
+                    </div>
+                    <div class="sub_datos_usuario">
+                        <label for="{{ form_usuario.nombre.id_for_label }}">{{ form_usuario.nombre.label }}</label><br>
+                        {{ form_usuario.nombre }}
+                    </div>
+                </div>
+                <div class="datos_usuario">
+                    <div class="sub_datos_usuario">
+                        <label for="{{ form_usuario.tipo_de_documento.id_for_label }}">{{ form_usuario.tipo_de_documento.label }}</label><br>
+                        {{ form_usuario.tipo_de_documento }}
+                    </div>
+                    <div class="sub_datos_usuario">
+                        <label for="{{ form_usuario.numero_de_documento.id_for_label }}">{{ form_usuario.numero_de_documento.label }}</label><br>
+                        {{ form_usuario.numero_de_documento }}
+                    </div>
+                </div>
+                <div class="datos_usuario">
+                    <div class="sub_datos_usuario">
+                        <label for="{{ form_usuario.numero_de_cuil.id_for_label }}">{{ form_usuario.numero_de_cuil.label }}</label><br>
+                        {{ form_usuario.numero_de_cuil }}
+                    </div>
+                    <div class="sub_datos_usuario">
+                        <label for="{{ form_usuario.genero.id_for_label }}">{{ form_usuario.genero.label }}</label><br>
+                        {{ form_usuario.genero }}
+                    </div>
+                </div><br>
+
+                <!--Datos familiares del usuario-->
+                <div class="tabla_familia">
+                    <h3 class="texto_gris">Situación familiar</h3>
+                    <div class="situacion_familiar">
+                        <div class="datos_usuario">
+                            <div class="sub_datos_usuario">
+                                <label for="{{  form_familia.name }}"><strong>{{  form_familia.estado_civil.label }}</strong> </label><br>
+                                {{ form_familia.estado_civil }}
+                            </div>
+                        </div>
+                        <div class="datos_usuario">
+                            <div class="sub_datos_usuario">
+                                <label for="{{ form_familia.name }}">{{ form_familia.cantidad_hijos.label }}</label><br>
+                                {{ form_familia.cantidad_hijos }}
+                            </div>
+                            <div class="sub_datos_usuario">
+                                <label for="{{ form_familia.name }}">{{ form_familia.cantidad_familiares.label }}</label><br>
+                                {{ form_familia.cantidad_familiares }}
+                            </div>
+                        </div>
+                        <div class="datos_usuario">
+                            <div class="sub_datos_usuario">
+                                <label for="{{ form_familia.name }}"><strong>{{ form_familia.situacion_padre.label }}</strong> </label><br>
+                                {{ form_familia.situacion_padre }}
+                            </div>
+                            <div class="sub_datos_usuario">
+                                <label for="{{ form_familia.name }}"><strong>{{ form_familia.situacion_madre.label }}</strong> </label><br>
+                                {{ form_familia.situacion_madre }}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <button id="button_aceptar" class="boton" style="float: right;"  type="submit">Guardar</button>
+            </div>
+
+        </div>
+    {% endblock %}
+
+{% block script %}
+    <script>
+        document.addEventListener("DOMContentLoaded", function() {
+            // IDs de los inputs a modificar
+            let inputIds = ['apellido', 'nombre', 'tipo_documento', 'numero_documento', 'numero_cuil', 'genero'];
+
+            inputIds.forEach(function(id) {
+                let input = document.getElementById(id);
+
+                if (input) {
+                    // Agregar la clase no-select
+                    input.classList.add('no-select');
+
+                    // Hacer que el input sea readonly
+                    input.readOnly = true;
+
+                    // Prevenir que el input reciba el foco
+                    input.addEventListener('focus', function(event) {
+                        event.preventDefault();
+                    });
+                }
+            });
+        });
+    </script>
+{% endblock %}
