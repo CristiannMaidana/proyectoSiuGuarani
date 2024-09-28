@@ -1,0 +1,42 @@
+.input{
+    margin-top: 5px;
+    font-family: Helvetic Arial, sans-serif;
+    font-size: 14px;
+    width: 300px;
+    height: 20px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    padding: 4px 6px;
+    box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.075);
+    align-items: center;
+
+}
+.input_compuesto{
+    width: 100px;
+}
+
+.selec{
+    margin-top: 5px;
+    font-family: Helvetic Arial, sans-serif;
+    font-size: 14px;
+    width: 310px;
+    height: 30px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    padding: 4px 6px;
+    box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.075);
+}
+
+/*Muestra el input seleccionado brillando */
+.input:focus {
+    outline: none; /* Eliminar el contorno por defecto */
+    box-shadow: 0 0 4px 2px #75B9F0; /* Efecto de luz azul */
+    border: 1px solid #75B9F0;
+}
+
+/*Muestra el select seleccionado brillando*/
+.selec:focus {
+    outline: none; /* Eliminar el contorno por defecto */
+    box-shadow: 0 0 4px 2px #75B9F0; /* Efecto de luz azul */
+    border: 1px solid #75B9F0;
+}
