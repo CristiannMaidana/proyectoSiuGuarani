@@ -1,0 +1,43 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}SIU Guaraní{% endblock %}</title>
+    <link rel="icon" href="{% static 'SIU/imagenes/favicon.ico' %}">
+    <link rel="stylesheet" href="{% static 'SIU/css/navegadores/navegador_accesos.css' %}">
+    <link rel="stylesheet" href="{% static 'SIU/css/inputs/inputs.css' %}">
+    <link rel="stylesheet" href="{% static 'SIU/css/inputs/inputs_numericos.css' %}">
+    <link rel="stylesheet" href="{% static 'SIU/css/inputs/boton.css' %}">
+    <link rel="stylesheet" href="{% static 'SIU/css/textos/texto_azul.css' %}">
+    <link rel="stylesheet" href="{% static 'SIU/css/textos/texto_gris.css' %}">
+    <link rel="stylesheet" href="{% static 'SIU/css/notas/alerta_inscripciones.css' %}">
+    <link rel="stylesheet" href="{% static 'SIU/css/notas/mensaje_error.css' %}">
+    <link rel="stylesheet" href="{% static 'SIU/css/cuerpo.css' %}">
+    <link rel="stylesheet" href="https://code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
+</head>
+<body>
+    <div class="contenedor_alumno_principal">
+        <div class="sub_contenedor_alumno_principal">
+            <div class="logo_untdf">
+                <img src="{% static 'SIU/imagenes/logo-transparente.png' %}">
+            </div>
+        </div>
+    </div>
+
+    <div class="navegador">
+        <div class="sub_navegador">
+            <button class="boton_pagina_actual"><a href="{% url 'SIU:acceso' %}" class="link">Acceso</a></button>
+        </div>
+    </div>
+
+    <!-- Contenido específico de cada página -->
+    {% block content %}
+
+    {% endblock %}
+
+    <!-- Scripts adicionales -->
+</body>
+</html>
