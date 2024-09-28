@@ -1,0 +1,432 @@
+{% extends 'SIU/templates_base/navegador_base.html' %}
+{% load static %}
+{% block title %}SIU Guaraní - Inscripción a Exámenes{% endblock %}
+
+{% block style %}
+        /*Contenedor de examenes*/
+        .contenedor{
+            width: 1170px;
+            height: 661px;
+            display: flex;
+            margin-left: auto; /* Margen izquierdo automático */
+            margin-right: auto; /* Margen derecho automático */
+            align-items: center;
+            justify-content: center;
+        }
+        .dos_columnas{
+            width: 1170px;
+            height: 661px;
+            margin-left: auto; /* Margen izquierdo automático */
+            margin-right: auto; /* Margen derecho automático */
+            align-items: center;
+            justify-content: center;
+        }
+        .columna_uno_examenes{
+            width: 870px;
+            height: 155px;
+            float: left;
+        }
+        .columna_dos_calendario{
+            width: 270px;
+            height: 661px;
+            background: black;
+            float: right;
+        }
+        .titulo_operacion{
+            width: 870px;
+            height: 35px;
+            color: #0088CC;
+        }
+        .contenedor_inscripcion_examenes{
+            width: 870px;
+            height: 100px;
+        }
+        .examenes_a_inscibirse{
+            width: 275px;
+            height: 78px;
+            float: left;
+        }
+
+
+        .alerta_no_examenes{
+            width: 275px;
+            height: 78px;
+            display: flex;
+            align-items: center;
+            justify-items: center;
+            background: #FCF8E3;
+            border-radius: 7px;
+            float: left;
+        }
+        .texto_no_materias{
+            width: 275px;
+            height: 58px;
+            margin-top: 10px;
+            text-align: center;
+            color: #B39C75;
+        }
+        .sub_alerta_no_examenes{
+            width: 275px;
+            height: 58px;
+        }
+
+
+
+        .examenes_inscriptos{
+            width: 573px;
+            height: 100px;
+            float: right;
+            align-items: center;
+            justify-content: center;
+        }
+        .alerta{
+            width: 573px;
+            height: 103px;
+            display: flex;
+            border-bottom: 1px solid black;
+            border-left: 1px solid black;
+        }
+        .sub_alerta{
+            width: 561px;
+            height: 54px;
+            margin-left: 10px;
+        }
+
+        .dar_de_baja{
+            width: 550px;
+            height: 40px;
+            margin-left: 10px;
+            background: #DFF0D8;
+            display: flex;
+            align-items: center;
+            justify-content: right;
+            border: 1px solid #DFF0D9;
+        }
+
+{% endblock %}
+
+{% block navegador %}
+    <button class="nueva_pagina"><a href="{% url 'SIU:materia' %}" class="salto_pagina_texto">Inscripción a Materias</a></button>
+    <button class="pagina_actual"><a href="{% url 'SIU:examen' %}" class="pagina_actual_texto" style=" width: 157px">Inscripción a Exámenes</a></button>
+    <div style="position: relative">
+        <button class="nueva_pagina salto_pagina_texto"  onclick="mostrarOpciones_navegador()" >Reportes</button>
+        <ul id="lista_opciones_navegador" class="lista_opciones_reportes" style="display: none">
+            <li class="li_lista_opciones_reportes"><a href="{% url 'SIU:plan_estudio' %}">Plan de estudio</a></li>
+            <li class="li_lista_opciones_reportes"><a href="{% url 'SIU:inscripciones' %}">Mis inscripciones</a></li>
+            <li class="li_lista_opciones_reportes"><a href="{% url 'SIU:porcentaje_avance_carrera' %}">Promedio y porcentaje de avance en la carrera</a></li>
+        </ul>
+    </div>
+    <button class="nueva_pagina"><a href="{% url 'SIU:datos_censales' %}" class="salto_pagina_texto">Mis datos personales</a> </button>
+{% endblock %}
+
+{% block content %}
+    <link rel="stylesheet" type="text/css" href="{% static 'SIU/css/calendario.css' %}">
+    <div class="contenedor">
+        <div id="myModal" class="modal {% if no_curso %}show{% endif %}">
+            <div class="modal-content">
+                <p>Todavia no curso la materia: {{ nombre_materia }}</p>
+                <form method="post">{% csrf_token %}
+                    <button class="boton"><a href="{% url 'SIU:materia' %}"></a>Aceptar</button>
+                    <button class="boton"><a href="{% url 'SIU:materia' %}"></a>Cancelar</button>
+                </form>
+            </div>
+        </div>
+        <div id="myModal" class="modal {% if dar_de_baja %}show{% endif %}">
+            <div class="modal-content">
+                <p>¿Está seguro que quiere dar de baja la materia?</p>
+                <form method="post">{% csrf_token %}
+                    <input type="hidden" name="id_eliminar" value="{{ id_eliminar }}">
+                    <button class="boton" type="submit" name="confirmar_baja" value="True">Aceptar</button>
+                    <button class="boton" type="submit" name="confirmar_baja" value="False">Cancelar</button>
+                </form>
+            </div>
+        </div>
+        <div class="dos_columnas">
+            <div class="columna_uno_examenes">
+                <div class="titulo_operacion">
+                    <h2 class="texto_azul">Inscripción a exámenes</h2>
+                </div>
+                <div class="contenedor_inscripcion_examenes">
+
+                    {% if periodo_inscripcion %}
+                        <div class="examenes_a_inscibirse">
+                            {% if mi_lista is not none %}
+                                <ul>
+                                    {% for tupla in mi_lista %}
+                                        <li onclick="seleccionarElemento('{{ tupla.id_materia.nombre_materia }}')" style="margin-bottom: 2px; cursor: pointer">{{ tupla.id_materia.nombre_materia }}</li>
+                                    {% endfor %}
+                                </ul>
+                                <form id="formulario" method="POST">{% csrf_token %}
+                                    <input type="hidden" id="elemento_seleccionado" name="elemento_seleccionado">
+                                </form>
+                            {% endif %}
+                        </div>
+                    {% else %}
+                        <div class="alerta_no_examenes">
+                            <div class="sub_alerta_no_examenes">
+                                <div class="texto_no_materias">No hay actividades disponibles para inscribirse</div>
+                            </div>
+                        </div>
+                    {% endif %}
+
+                    <div class="examenes_inscriptos">
+                        {% if historial_academico is not none %} <!--Si tiene examenes para rendir: -->
+                            <div class="alerta">
+                                <div class="sub_alerta">
+                                    <h3>Comenzar inscripción</h3>
+                                    <p>Seleccioná una actividad del listado para ver aquí las mesas a las que te podés inscribir</p>
+                                    <h4>Inscripciones activas</h4>
+                                </div>
+                            </div><br><br>
+                            <div id="materias_inscriptas">
+                                {% for tupla_historial in historial_academico%} <!-- Lista las materias que rendira: -->
+                                    {% if tupla_historial.id_examen_alumno.inscripto and not tupla_historial.id_examen_alumno.aprobo %} <!-- Si la materia esta aprobada no la muestra. Tendria que meter en materia 2 variables o al menos 1 de que aprobo o no -->
+                                        <p>{{ tupla_historial.id_examen_alumno.id_materia_con_examen.id_examen.id_materia.nombre_materia }} - {{ tupla_historial.id_examen_alumno.fecha }} </p><hr style="margin-top: -10px">
+                                        <form method="post" class="dar_de_baja">{% csrf_token %}
+                                            <button class="boton" style="width: 100px" type="submit"  name="dar_de_baja_materia_id" value="{{ tupla_historial.id_historial_academico }}">Dar de baja</button>
+                                        </form><br><br>
+                                    {% endif %}
+                                {% endfor %}
+                            </div>
+                        {% else %}
+                            <div class="alerta">
+                                <div class="sub_alerta">
+                                    <h3>Comenzar inscripción</h3>
+                                    <p>Seleccioná una actividad del listado para ver aquí las mesas a las que te podés inscribir</p>
+                                </div>
+                            </div>
+                        {% endif %}
+                    </div>
+                </div>
+            </div>
+            <div class="columna_2">
+                <div class="notificaciones">
+                    <h3>Inscripciones</h3>
+                    <label>
+                        <select class="select">
+                            <option value="quincena">Quincena</option>
+                            <option value="mes">Mes</option>
+                            <option value="trimestre">Trimestre</option>
+                            <option value="cuatrimestre" selected="">Cuatrimestre</option>
+                            <option value="semestre">Semestre</option>
+                        </select>
+                    </label>
+
+                    <div class="calendarios">
+                        <div class="sub_calendarios">
+                            <div class="items">
+                                <div class="panel_actividad">
+                                    <div class="periodo">
+                                        <h4>Enero - Abril</h4>
+                                        <div class="tabla">
+                                            <div class="fila">
+                                                <div class="tit_lateral">
+
+                                                </div>
+                                                <div class="celda">
+                                                    <span>lu</span>
+                                                </div>
+                                                <div class="celda">
+                                                    <span>ma</span>
+                                                </div>
+                                                <div class="celda">
+                                                    <span>mi</span>
+                                                </div>
+                                                <div class="celda">
+                                                    <span>ju</span>
+                                                </div>
+                                                <div class="celda">
+                                                    <span>vi</span>
+                                                </div>
+                                                <div class="celda">
+                                                    <span>sa</span>
+                                                </div>
+                                            </div>
+                                            <div class="fila">
+                                                <div class=" celda tit_lateral" style="width: 49px">
+                                                    <span>0 - 8 hs</span>
+                                                </div>
+                                                <div class="celda">
+                                                    <span></span>
+                                                </div>
+                                                <div class="celda">
+                                                    <span></span>
+                                                </div>
+                                                <div class="celda">
+                                                    <span></span>
+                                                </div>
+                                                <div class="celda">
+                                                    <span></span>
+                                                </div>
+                                                <div class="celda">
+                                                    <span></span>
+                                                </div>
+                                                <div class="celda">
+                                                    <span></span>
+                                                </div>
+                                            </div>
+                                            <div class="fila">
+                                                <div class=" celda tit_lateral" style="width: 49px">
+                                                    <span>8 - 16 hs</span>
+                                                </div>
+                                                <div class="celda">
+                                                    <span></span>
+                                                </div>
+                                                <div class="celda">
+                                                    <span></span>
+                                                </div>
+                                                <div class="celda">
+                                                    <span></span>
+                                                </div>
+                                                <div class="celda">
+                                                    <span></span>
+                                                </div>
+                                                <div class="celda">
+                                                    <span></span>
+                                                </div>
+                                                <div class="celda">
+                                                    <span></span>
+                                                </div>
+                                            </div>
+                                            <div class="fila">
+                                                <div class=" celda tit_lateral" style="width: 49px">
+                                                    <span>16 - 24 hs</span>
+                                                </div>
+                                                <div class="celda">
+                                                    <span></span>
+                                                </div>
+                                                <div class="celda">
+                                                    <span></span>
+                                                </div>
+                                                <div class="celda">
+                                                    <span></span>
+                                                </div>
+                                                <div class="celda">
+                                                    <span></span>
+                                                </div>
+                                                <div class="celda">
+                                                    <span></span>
+                                                </div>
+                                                <div class="celda">
+                                                    <span></span>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="periodo">
+                                        <h4>Mayo - Agosto</h4>
+                                        <div class="tabla">
+                                            <div class="fila">
+                                                <div class="tit_lateral"></div>
+                                                <div class="celda">
+                                                    <span>lu</span>
+                                                </div>
+                                                <div class="celda">
+                                                    <span>ma</span>
+                                                </div>
+                                                <div class="celda">
+                                                    <span>mi</span>
+                                                </div>
+                                                <div class="celda">
+                                                    <span>ju</span>
+                                                </div>
+                                                <div class="celda">
+                                                    <span>vi</span>
+                                                </div>
+                                                <div class="celda">
+                                                    <span>sa</span>
+                                                </div>
+                                            </div>
+                                            <div class="fila">
+                                                <div class=" celda tit_lateral" style="width: 49px">
+                                                    <span>0 - 8 hs</span>
+                                                </div>
+                                                <div class="celda">
+                                                    <span></span>
+                                                </div>
+                                                <div class="celda">
+                                                    <span></span>
+                                                </div>
+                                                <div class="celda">
+                                                    <span></span>
+                                                </div>
+                                                <div class="celda">
+                                                    <span></span>
+                                                </div>
+                                                <div class="celda">
+                                                    <span></span>
+                                                </div>
+                                                <div class="celda">
+                                                    <span></span>
+                                                </div>
+                                            </div>
+                                            <div class="fila">
+                                                <div class=" celda tit_lateral" style="width: 49px">
+                                                    <span>8 - 16 hs</span>
+                                                </div>
+                                                <div class="celda">
+                                                    <span></span>
+                                                </div>
+                                                <div class="celda">
+                                                    <span></span>
+                                                </div>
+                                                <div class="celda">
+                                                    <span></span>
+                                                </div>
+                                                <div class="celda">
+                                                    <span></span>
+                                                </div>
+                                                <div class="celda">
+                                                    <span></span>
+                                                </div>
+                                                <div class="celda">
+                                                    <span></span>
+                                                </div>
+                                            </div>
+                                            <div class="fila">
+                                                <div class=" celda tit_lateral" style="width: 49px">
+                                                    <span>16 - 24 hs</span>
+                                                </div>
+                                                <div class="celda">
+                                                    <span></span>
+                                                </div>
+                                                <div class="celda">
+                                                    <span></span>
+                                                </div>
+                                                <div class="celda">
+                                                    <span></span>
+                                                </div>
+                                                <div class="celda">
+                                                    <span></span>
+                                                </div>
+                                                <div class="celda">
+                                                    <span></span>
+                                                </div>
+                                                <div class="celda">
+                                                    <span></span>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="periodo_materias">
+                                        <h4 class="texto_gris">Materias:</h4>
+                                        <div style="height: auto">
+                                            <ul style="text-align: left">
+                                                {% for materia in usuario_cursada %}
+                                                    <li>{{ materia }}</li>
+                                                {% endfor %}
+                                            </ul>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <hr>
+                    <h3>Inscripción a exámenes</h3>
+                    <p style="color: rgb(51, 51, 51)">Los exámenes a los que te inscribas aparecerán aquí.</p>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}
