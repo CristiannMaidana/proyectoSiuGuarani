@@ -1,0 +1,308 @@
+{% extends 'SIU/templates_base/navegador_base.html' %}
+
+{% block title %}SIU Guaraní - Configuración{% endblock %}
+
+{% block style %}
+    .contenedor_principal{
+        width: 1170px;
+        height: 549px;
+        margin-left: auto; /* Margen izquierdo automático */
+        margin-right: auto; /* Margen derecho automático */
+    }
+    .titulo_operaciones{
+        width: 1170px;
+        height: 55px;
+    }
+    .sub_titulo_operaciones{
+        width: 1170px;
+        height: 55px;
+    }
+    .contenedor_configuracion{
+        width: 1170px;
+        height: 494px;
+    }
+    .sub_contenedor_configuracion{
+        width: 1170px;
+        height: 494px;
+    }
+    .dos_contenedores{
+        width: 1170px;
+        height: 218px;
+        display: flex;
+    }
+    .notificacion{
+        width: 570px;
+        height: 133px;
+    }
+    .formulario_notificaciones{
+        width: 570px;
+        height: 103px;
+    }
+    .formulario_mail{
+        width: 570px;
+        height: 60px;
+    }
+    .control_input{
+        width: 570px;
+        height: 30px;
+    }
+    .cambiar_contrasenna{
+        width: 570px;
+        height: 218px;
+        align-items: flex-end
+    }
+    .formulario_contrasenna{
+        width: 570px;
+        height: 145px;
+        display: flex;
+        justify-content: center;
+    }
+    .sub_formulario{
+        width: 530px;
+        height: 140px;
+        align-content: center;
+    }
+    .contrasenna_configuracion{
+        width: 570px;
+        height: 45px;
+        display: flex;
+        justify-content: space-between;
+    }
+    .controlador{
+        width: 390px;
+        height: 45px;
+    }
+
+    .sub_contenedor_titulo{
+        height: 51px;
+        display: flex;
+        justify-content: space-between;
+        align-items: center
+    }
+
+    .red_input {
+        background-color: #ffcccc; /* Cambiar aquí el color de fondo a rojo claro */
+        border-color: #dddddd; /* Cambiar el color del borde a rojo */
+    }
+    /* Estilo para la ventana emergente */
+    .custom-alert {
+        position: fixed;
+        top: -100px; /* Inicialmente fuera de la pantalla */
+        left: 50%;
+        transform: translateX(-50%);
+        padding: 4px;
+        background-color: #ffcccc;
+        border: 1px solid #ccc;
+        box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+        z-index: 9999;
+        transition: top 0.5s ease; /* Animación de entrada */
+        font-family: Arial;
+        font-size: 14px;
+        color: red;
+        border-redius: 5px;
+    }
+    /* Estilo para el botón de cerrar */
+    .custom-alert .closebtn {
+        position: absolute;
+        top: 5px;
+        right: 10px;
+        cursor: pointer;
+    }
+{% endblock %}
+
+{% block navegador %}
+    <button class="nueva_pagina"><a href="{% url 'SIU:materia' %}" class="salto_pagina_texto">Inscripción a Materias</a></button>
+    <button class="nueva_pagina"><a href="{% url 'SIU:examen' %}" class="salto_pagina_texto">Inscripción a Exámenes</a></button>
+    <div style="position: relative">
+        <button class="nueva_pagina salto_pagina_texto" onclick="mostrarOpciones_navegador()" >Reportes</button>
+        <ul id="lista_opciones_navegador" class="lista_opciones_reportes" style="display: none">
+            <li class="li_lista_opciones_reportes"><a href="{% url 'SIU:plan_estudio' %}">Plan de estudio</a></li>
+            <li class="li_lista_opciones_reportes"><a href="{% url 'SIU:inscripciones' %}">Mis inscripciones</a></li>
+            <li class="li_lista_opciones_reportes"><a href="{% url 'SIU:porcentaje_avance_carrera' %}">Promedio y porcentaje de avance en la carrera</a></li>
+        </ul>
+    </div>
+    <button class="nueva_pagina"><a href="{% url 'SIU:datos_censales' %}" class="salto_pagina_texto">Mis datos personales</a> </button>
+{% endblock %}
+
+{% block titulo_pagina %}Datos de contacto{% endblock %}
+
+{% block navegador_datos_personales %}
+        <li><a href="{% url 'SIU:datos_censales' %}" class="li_links">Datos personales</a></li>
+        <li><a href="{% url 'SIU:domicilio' %}" class="li_links">Domicilio</a></li>
+        <li id="pagina_actual_links"><a href="{% url 'SIU:datos_contacto' %}" class="pagina_actual_texto">Datos de contacto</a></li>
+        <li><a href="{{ url_estudios }}" class="li_links">Estudios</a></li>
+        <li><a href="{{ url_allegados }}" class="li_links">Allegados</a></li>
+        <li><a href="{% url 'SIU:discapacidad' %}" class="li_links">Discapacidad</a></li>
+{% endblock %}
+
+{% block content %}
+
+<!-- La estructura de los inputs y configuraciones-->
+    <div class="contenedor_principal">
+            <div class="titulo_operaciones">
+                <div class="sub_titulo_operaciones">
+                    <h2 class="texto_azul">Configuración</h2>
+                </div>
+            </div>
+            <div class="contenedor_configuracion">
+                <div class="sub_contenedor_configuracion">
+                    <form method="post">{% csrf_token %}
+                        <div class="dos_contenedores">
+
+                            <div class="notificacion">
+                                <div class="formulario_notificaciones">
+                                    <div class="sub_contenedor_titulo">
+                                        <h3 class="texto_gris"><span class="pull_left">Notificaciones</span> </h3>
+                                        <button id="boton_cambiar_mail" class="boton" style="display: none" type="submit">Aceptar</button>
+                                    </div>
+                                    <div class="formulario_mail">
+                                        <div class="control_input">
+                                            <label for="{{ form.name }}">{{ form.mail.label}}</label>
+                                            {{ form.mail }}
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="cambiar_contrasenna">
+                                <div class="sub_contenedor_titulo">
+                                    <h3 class="texto_gris">Cambiar contraseña</h3>
+                                    <button id="boton_cambiar_contrasenna" class="boton" style="display: none" type="submit">Aceptar</button>
+                                </div>
+                                {% if no_coincide_contrasenna_actual %}
+                                    <div class="formulario_contrasenna">
+                                        <div class="sub_formulario">
+                                            <div class="contrasenna_configuracion">
+                                                <label for="{{ form.name }}">{{ form.contrasenna_actual.label}}</label>
+                                                <div class="controlador">
+                                                    {{ form.contrasenna_actual }}
+                                                </div>
+                                            </div>
+                                            <div class="contrasenna_configuracion">
+                                                <label for="{{ form.name }}">{{ form.contrasenna_nueva.label}}</label>
+                                                <div class="controlador">
+                                                    {{ form.contrasenna_nueva }}
+                                                </div>
+                                            </div>
+                                            <div class="contrasenna_configuracion">
+                                                <label for="{{ form.name }}">{{ form.confirmar_contrasenna_nueva.label}}</label>
+                                                <div class="controlador">
+                                                    {{ form.confirmar_contrasenna_nueva }}
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                {% else %}
+                                    <div class="formulario_contrasenna">
+                                        <div class="sub_formulario">
+                                            <div class="contrasenna_configuracion">
+                                                <label for="{{ form.name }}">{{ form.contrasenna_actual.label}}</label>
+                                                <div class="controlador">
+                                                    {{ form.contrasenna_actual }}
+                                                </div>
+                                            </div>
+                                            <div class="contrasenna_configuracion">
+                                                <label for="{{ form.name }}">{{ form.contrasenna_nueva.label}}</label>
+                                                <div class="controlador">
+                                                    {{ form.contrasenna_nueva }}
+                                                </div>
+                                            </div>
+                                            <div class="contrasenna_configuracion">
+                                                <label for="{{ form.name }}">{{ form.confirmar_contrasenna_nueva.label}}</label>
+                                                <div class="controlador">
+                                                    {{ form.confirmar_contrasenna_nueva }}
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                {% endif %}
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+
+
+    <script>
+        // Selecciona y guardo los inputs necesarios
+
+        const inputs = [
+            document.getElementById('contrasenna_actual'),
+            document.getElementById('contrasenna_nueva'),
+            document.getElementById('confirmar_contrasenna')
+        ];
+        const inputMail = document.getElementById('mail');
+
+        // Creo las funciones necesarias que se agregan en los eventos
+
+        const checkInputs = () => {
+            const boton = document.getElementById('boton_cambiar_contrasenna');
+            const allFilled = inputs.every(input => input.value.trim() !== '');
+            if (allFilled){
+                boton.style.display = 'block';
+            }
+            else {
+                boton.style.display = 'none';
+            }
+        };
+        const checkMailInput = () => {
+            const value = inputMail.value.trim();
+            const botonAceptarMail = document.getElementById('boton_cambiar_mail');
+            if (value !== '') {
+                botonAceptarMail.style.display = 'block'
+            } else {
+                botonAceptarMail.style.display = 'none'
+            }
+        };
+
+        //Creo los eventos para los inputs
+
+        inputs.forEach(input => {
+            input.addEventListener('input', checkInputs);
+        });
+        inputMail.addEventListener('input', checkMailInput);
+    </script><!-- Controlador de aparicion de botones -->
+    <script>
+    // Función para mostrar la alerta
+    function mostrarAlerta() {
+        let alerta = document.getElementById("customAlert");
+        alerta.style.top = "0"; // Mover la alerta hacia abajo
+        setTimeout(function() {
+            alerta.style.top = "-100px"; // Mover la alerta fuera de la pantalla
+        }, 5000); // 5000 milisegundos = 5 segundos
+    }
+
+    // Función para cerrar la alerta
+    function cerrarAlerta() {
+        let alerta = document.getElementById("customAlert");
+        alerta.style.top = "-100px"; // Mover la alerta fuera de la pantalla
+    }
+    </script><!-- El script de las alertas si ingreso mal la contraseña -->
+    <script>
+        //Creo la modificacion del css si ingresan mal la contraseña actual
+        const inputMalIngresado = document.querySelector('#contrasenna_actual');
+        const noCoincideContrasennaActual = {{ no_coincide_contrasenna_actual|lower }};
+
+        if (noCoincideContrasennaActual) {
+            inputMalIngresado.classList.add('red_input');
+            document.getElementById('alerta_texto').innerHTML = "La contraseña ingresada no coincide";
+            mostrarAlerta();
+        }
+    </script><!-- Contraseña actual falla -->
+    <script>
+        //Creo la modificacion del css si ingresan mal la contraseña nueva
+        const inputMalIngresado = document.querySelector('#confirmar_contrasenna');
+        const noCoincideContrasennaNueva = {{ cambio|lower }};
+
+        if (!noCoincideContrasennaNueva) {
+            inputMalIngresado.classList.add('red_input');
+            document.getElementById('alerta_texto').innerHTML = "La contraseña nueva no coincide";
+            mostrarAlerta();
+        }
+        else {
+            document.getElementById('alerta_texto').innerHTML = "La contraseña se actualizo";
+            mostrarAlerta();
+        }
+    </script><!-- Contraseña nueva opciones -->
+{% endblock %}
