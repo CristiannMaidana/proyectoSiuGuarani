@@ -1,0 +1,82 @@
+{% extends 'SIU/templates_base/datos_personales_base.html' %}
+
+{% block title %}SIU Guaraní - Datos censales{% endblock %}
+
+{% block style %}
+    .tabla_datos_contacto{
+        width: 870px;
+        height: 285px;
+        display: flow;
+    }
+    .edicion_tabla_datos_contacto {
+        width: 870px;
+        height: 116px;
+        box-sizing: border-box;
+        display: table;
+        margin-bottom: 20px;
+
+    }
+    thead{
+        border-color: rgb(128, 128, 128);
+        border-collapse: collapse;
+        display: table-header-group;
+    }
+    tr{
+        border-color: rgb(128, 128, 128);
+        display: table-row;
+    }
+    th{
+        border-collapse: collapse;
+        padding: 8px;
+        text-align: left;
+        vertical-align: bottom;
+    }
+    tbody{
+        border-color: rgb(128, 128, 128);
+        display: table-row-group;
+    }
+    td{
+        border-collapse: collapse;
+        border-top: 1px solid rgb(221, 221, 221);
+        display: table-cell;
+        padding: 8px;
+        vertical-align: top;
+    }
+{% endblock %}
+
+{% block titulo_pagina %}Datos de contacto{% endblock %}
+
+{% block navegador_datos_personales %}
+        <li><a href="{% url 'SIU:datos_censales' %}" class="li_links">Datos personales</a></li>
+        <li><a href="{% url 'SIU:domicilio' %}" class="li_links">Domicilio</a></li>
+        <li id="pagina_actual_links"><a href="{% url 'SIU:datos_contacto' %}" class="pagina_actual_texto">Datos de contacto</a></li>
+        <li><a href="{{ url_estudios }}" class="li_links">Estudios</a></li>
+        <li><a href="{{ url_allegados }}" class="li_links">Allegados</a></li>
+        <li><a href="{% url 'SIU:discapacidad' %}" class="li_links">Discapacidad</a></li>
+{% endblock %}
+
+{% block content %}
+    <div class="tabla_datos_contacto">
+        <table class="edicion_tabla_datos_contacto">
+            <thead>
+                <tr>
+                    <th style="text-align: left">Tipo</th>
+                    <th style="text-align: left">Contacto</th>
+                    <th class="elemento_vacio"></th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td >E-mail principal</td>
+                    <td>{{ usuario.id_datos_contacto.correo}}</td>
+                    <td><a href="{% url 'SIU:configuracion' %}" style="color: #58B1D1">Cambiar</a> </td>
+                </tr>
+                <tr>
+                    <td>Teléfono Celular</td>
+                    <td>{{ usuario.id_datos_contacto.numero_celular}}</td>
+                    <td><a href="{% url 'SIU:editar_datos_contacto' %}" style="color: #58B1D1">Cambiar</a> </td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+{% endblock %}
