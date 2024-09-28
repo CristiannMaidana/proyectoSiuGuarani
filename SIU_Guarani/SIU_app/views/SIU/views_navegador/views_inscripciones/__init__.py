@@ -1,0 +1,3 @@
+from .views_inscripcion_examenes import InscripcionExamenes
+
+from .views_inscripcion_materias import InscripcionMaterias
