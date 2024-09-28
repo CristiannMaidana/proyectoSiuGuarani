@@ -1,0 +1,91 @@
+{% extends 'SIU/templates_base/acceso_base.html' %}
+
+{% block title %} SIU-Guaraní - Acceso {% endblock %}
+
+{% block content %}
+    <style>
+        #2_columnas{
+            width: 1170px;
+            height: 428px;
+        }
+        #columna_1{
+            width: 470px;
+            height: 428px;
+            float: left;
+            margin-left: 350px;
+        }
+        #columna_2{
+            width: 670px;
+            height: 192px;
+            float: right;
+            margin-right: 350px;
+        }
+        h1{
+            color: #8D8D8D;
+            font-size: 24px;
+            line-height: 32px;
+        }
+        li{
+            font-size: 15px;
+            margin-bottom: 5px;
+        }
+    </style>
+
+    <div id="2_columnas">
+        <div id="columna_1">
+            <h1> Recuperar contraseña </h1>
+            <p> Ingresa tu número de documento y se te enviará un mail con instrucciones para reestablecer tu contraseña</p>
+            <form method="post">{% csrf_token %}
+                <label for="{{ form.name }}">{{ form.tipo_de_documento.label }}</label><br>
+                    {{ form.tipo_de_documento }}<br><br>
+                <label for="{{ form.name }}">{{ form.numero_documento.label }}</label><br>
+                    {{ form.numero_documento }}<br><br>
+                <button class="boton" type="submit" style="width: 90px">Continuar</button><br><br>
+            </form>
+            <div id="notificacion" class="fallos_formulario" style="width: 470px;height: 58px; display: none">
+                <p id="alerta_error"></p>
+            </div>
+        </div>
+        <div id="columna_2">
+            <h1>SIU Guaraní</h1>
+            <p>Algunas de las cosas que podés hacer con este sistema son: </p>
+            <ul>
+                <li>Inscribirte a materias y exámenes.</li>
+                <li>Consultar el plan de tu propuesta.</li>
+                <li>Consultar tu historia académica.</li>
+                <li>Actualizar tus datos personales.</li>
+                <li>Recibir alertas sobre periodos de inscripción o vencimiento de exámenes finales.</li>
+            </ul>
+        </div>
+    </div>
+
+<script>
+    const campoVacio = {{ vacio|lower }};
+
+    if (campoVacio){
+        let mensaje = document.getElementById('alerta_error');
+        let muestroNotificacion = document.getElementById('notificacion');
+        muestroNotificacion.style.display = 'block';
+        muestroNotificacion.style.display = 'flex';
+        mensaje.innerText = 'El campo documento es requerido';
+    }
+</script>
+<script>
+    const usuarioEncontrado = {{ usuario_encontrado|lower }};
+
+    if (usuarioEncontrado){
+        let mensaje = document.getElementById('alerta_error');
+        let muestroNotificacion = document.getElementById('notificacion');
+        muestroNotificacion.style.display = 'block';
+        muestroNotificacion.style.display = 'flex';
+        mensaje.innerText = 'Se envio el correo al usuario'
+    }
+    if (!usuarioEncontrado && !campoVacio){
+        let mensaje = document.getElementById('alerta_error');
+        let muestroNotificacion = document.getElementById('notificacion');
+        muestroNotificacion.style.display = 'block';
+        muestroNotificacion.style.display = 'flex';
+        mensaje.innerText = 'No existe la persona segun el nro de documento';
+    }
+</script>
+{% endblock %}
