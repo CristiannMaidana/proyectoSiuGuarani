@@ -1,0 +1,12 @@
+.fallos_formulario{
+    width: 870px;
+    height: 38px;
+    background: #F2DEDE;
+    border: 1px solid #EED3D7;
+    border-radius: 5px;
+    align-content: center;
+    align-items: center;
+    justify-content: center;
+    display: flex;
+    text-align: center;
+}
