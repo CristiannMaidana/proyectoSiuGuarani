@@ -1,0 +1,118 @@
+{% extends 'SIU/templates_base/datos_personales_base.html' %}
+
+{% block title %}SIU Guaraní - Datos censales{% endblock %}
+
+{% block style %}
+    .domicilio_durante_clases{
+        width: 840px;
+        height: 440px;
+        background: #F5F5F5;
+        border-radius: 5px;
+        display: flow;
+        align-items: center;
+        align-content: center;
+        border: 1px solid rgb(227, 227, 227);
+        box-shadow: rgba(0, 0, 0, 0.05) 0px 1px 1px 0px inset;
+        padding-left: 10px;
+        padding-right: 10px;
+        margin-bottom: 20px;
+        line-height: 20px;
+    }
+    .edicion_domicilio_durante_clases{
+        width: 848px;
+        height: 375px;
+        line-height: 20px;
+    }
+
+    .cartel {
+        background-color: #f8d7da; /* Color de fondo del cartel */
+        color: #721c24; /* Color del texto del cartel */
+        border: 1px solid #f5c6cb; /* Borde del cartel */
+        padding: 10px; /* Espaciado interno del cartel */
+        margin-bottom: 20px; /* Margen inferior del cartel para separarlo de otros elementos */
+        border-radius: 5px; /* Bordes redondeados del cartel */
+        text-align: center;
+    }
+
+    .contenido_simple{
+        width: 848px;
+        height: 65px;
+        line-height: 20px;
+        margin-bottom: 5px;
+        cursor: pointer;
+    }
+    .contenido_compuesto{
+        width: 848px;
+        height: 65px;
+        display: flex;
+        justify-content: space-between;
+        margin-bottom: 5px;
+        line-height: 20px;
+        cursor: pointer;
+    }
+{% endblock %}
+
+{% block titulo_pagina %}Domicilio{% endblock %}
+
+{% block navegador_datos_personales %}
+        <li><a href="{% url 'SIU:datos_censales' %}" class="li_links">Datos personales</a></li>
+        <li id="pagina_actual_links"><a href="{% url 'SIU:domicilio' %}" class="pagina_actual_texto">Domicilio</a></li>
+        <li><a href="{% url 'SIU:datos_contacto' %}" class="li_links">Datos de contacto</a></li>
+        <li><a href="{{ url_estudios }}" class="li_links">Estudios</a></li>
+        <li><a href="{{ url_allegados }}" class="li_links">Allegados</a></li>
+        <li><a href="{% url 'SIU:discapacidad' %}" class="li_links">Discapacidad</a></li>
+{% endblock %}
+
+{% block content %}
+    <div class="domicilio_durante_clases">
+        <h3 class="texto_gris">Domicilio durante el período de clases</h3>
+        <div class="edicion_domicilio_durante_clases">
+            <div class="contenido_simple">
+                <label for="{{ form.name }}"><strong>{{ form.calle.label }}</strong></label><br>
+                {{ form.calle }}
+            </div>
+            <div class="contenido_compuesto">
+                <div style="width: 157px; height: 65px">
+                    <label for="{{ form.name }}"><strong>{{ form.numero_calle.label }}</strong></label><br>
+                    {{ form.numero_calle }}
+                </div>
+                <div style="width: 157px; height: 65px">
+                    <label for="{{ form.name }}">{{ form.piso.label }}</label><br>
+                    {{ form.piso }}
+                </div>
+                <div style="width: 157px; height: 65px">
+                    <label for="{{ form.name }}">{{ form.departamento.label }}</label><br>
+                    {{ form.departamento }}
+                </div>
+                <div style="width: 157px; height: 65px">
+                    <label for="{{ form.name }}">{{ form.unidad.label }}</label><br>
+                    {{ form.unidad }}
+                </div>
+            </div>
+            <div class="contenido_simple">
+                <label for="{{ form.name }}"><strong>{{ form.localidad.label }}</strong></label><br>
+                {{ form.localidad }}
+            </div>
+            <div class="contenido_compuesto">
+                <div style="width: 332px; height: 65px" >
+                    <label for="{{ form.name }}"><strong>{{ form.codigo_postal.label }}</strong></label><br>
+                    {{ form.codigo_postal }}
+                </div>
+                <div style="width: 332px; height: 65px" >
+                    <label for="{{ form.name }}">{{ form.barrio.label }}</label><br>
+                    {{ form.barrio }}
+                </div>
+            </div>
+            <div class="contenido_compuesto">
+                <div style="width: 332px; height: 65px">
+                    <label for="{{ form.name }}">{{ form.tipo_vivienda.label }}</label><br>
+                    {{ form.tipo_vivienda }}
+                </div>
+                <div style="width: 332px; height: 65px">
+                    <label for="{{ form.name }}">{{ form.tipo_convivencia.label }}</label><br>
+                    {{ form.tipo_convivencia }}
+                </div>
+            </div><button type="submit" class="boton" style="float: right;" name="guardar_cambios">Guardar</button>
+        </div>
+    </div>
+{% endblock %}
