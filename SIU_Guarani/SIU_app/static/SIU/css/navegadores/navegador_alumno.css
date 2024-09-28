@@ -1,0 +1,65 @@
+    /* CSS de conetendor_alumno*/
+.contenedor_alumno_principal {
+    width: 100%;
+    height: 101px;
+    display: flex;
+    background: #F8F8F8;
+    margin: 0 auto; /* Centrar horizontalmente */
+    align-items: center;
+    justify-content: center;
+    position: relative; /* Necesario para los seudoelementos */
+}
+
+.contenedor_alumno_principal::before,
+.contenedor_alumno_principal::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    width: calc((100vw - 1309px) / 2); /* Calcula el ancho de los bordes */
+    background-color: #F8F8F8; /* Color de fondo para los bordes extendidos */
+}
+
+.contenedor_alumno_principal::before {
+    left: 0; /* Extiende hacia la izquierda */
+}
+
+.contenedor_alumno_principal::after {
+    right: 0; /* Extiende hacia la derecha */
+}
+
+.sub_contenedor_alumno_principal {
+    width: 1170px;
+    height: 76px;
+    display: flex;
+    justify-content: space-between; /* Distribuye los elementos a lo largo del contenedor */
+    align-items: center; /* Centra verticalmente los elementos */
+}
+
+    .logo_untdf{
+        width: 270px;
+        height: 60px;
+        float: left;
+    }
+    .datos_alumno{
+        width: 253px;
+        height: 40px;
+        float: right;
+    }
+    .opciones_alumno{
+        width: 253px;
+        height: 40px;
+        position: relative;
+        z-index: 1; /* Asegura que el contenido principal esté sobre los seudoelementos */
+    }
+    .boton-sin-contorno {
+        background-color: transparent; /* Elimina el fondo */
+        border: none; /* Elimina el borde */
+        outline: none; /* Elimina el contorno al enfocar */
+        cursor: pointer; /* Cambia el cursor al pasar por encima */
+    }
+    .li_lista_opciones_alumno {
+        padding: 5px 0;
+        width: 80px;
+        font-size: 13px;
+    }
