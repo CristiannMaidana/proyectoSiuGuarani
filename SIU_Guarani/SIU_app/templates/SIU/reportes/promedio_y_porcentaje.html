@@ -1,0 +1,140 @@
+{% extends 'SIU/templates_base/navegador_base.html' %}
+
+{% block title %}SIU Guaraní - Promedio y porcentaje{% endblock %}
+
+{% block style %}
+    .contenedor_promedio{
+        width: 1170px;
+        height: 228px;
+        display: flex;
+        margin-left: auto; /* Margen izquierdo automático */
+        margin-right: auto; /* Margen derecho automático */
+        align-items: center;
+        justify-content: center;
+    }
+    .sub_contenedor_promedio{
+        width: 1170px;
+        height: 198px;
+        margin-left: auto; /* Margen izquierdo automático */
+        margin-right: auto; /* Margen derecho automático */
+        align-items: center;
+        justify-content: center;
+    }
+    .alerta_promedio{
+        width: 1170px;
+        height: 58px;
+        background: #D9EDF7;
+        text-align: center;
+        align-content: center;
+        border-radius: 5px;
+    }
+    .nota{
+        background: #3A87AD;
+        border-radius: 5px;
+        color: white;
+        border: 1px solid rgb(188, 232, 241);
+    }
+    .table {
+        border-radius: 5px;
+        border: 1px solid rgb(221, 221, 221);
+        display: table;
+        margin-bottom: 20px;
+
+        width: 1170px;
+        height: 75px;
+    }
+    .texto_centro{
+        text-align: center;
+    }
+
+    thead{
+        border-color: rgb(221, 221, 221);
+        border-collapse: separate;
+        display: table-header-group;
+        color: rgb(51, 51, 51);
+
+    }
+    tr{
+        border-color: rgb(221, 221, 221);
+        display: table-row;
+        vertical-align: middle;
+        color: rgb(51, 51, 51);
+
+    }
+    th{
+        border: 1px solid rgb(221, 221, 221);
+        display: table-cell;
+        padding: 8px;
+        text-align: left;
+        height: 36px;
+        color: rgb(51, 51, 51);
+    }
+    tbody{
+        border-color: rgb(221, 221, 221);
+        display: table-row-group;
+        vertical-align: middle;
+        color: rgb(51, 51, 51);
+
+    }
+    td{
+        border: 1px solid rgb(249, 249, 249);
+        border-collapse: separate;
+        display: table-cell;
+        padding: 8px;
+        text-align: center;
+        vertical-align: top;
+        color: rgb(51, 51, 51);
+    }
+{% endblock %}
+
+{% block navegador %}
+    <button class="nueva_pagina"><a href="{% url 'SIU:materia' %}" class="salto_pagina_texto">Inscripción a Materias</a></button>
+    <button class="nueva_pagina"><a href="{% url 'SIU:examen' %}" class="salto_pagina_texto">Inscripción a Exámenes</a></button>
+    <div style="position: relative">
+        <button class="pagina_actual pagina_actual_texto" style="color: white" onclick="mostrarOpciones_navegador()" >Reportes</button>
+        <ul id="lista_opciones_navegador" class="lista_opciones_reportes" style="display: none">
+            <li class="li_lista_opciones_reportes"><a href="{% url 'SIU:plan_estudio' %}">Plan de estudio</a></li>
+            <li class="li_lista_opciones_reportes"><a href="{% url 'SIU:inscripciones' %}">Mis inscripciones</a></li>
+            <li class="li_lista_opciones_reportes"><a href="{% url 'SIU:porcentaje_avance_carrera' %}">Promedio y porcentaje de avance en la carrera</a></li>
+        </ul>
+    </div>
+    <button class="nueva_pagina"><a href="{% url 'SIU:datos_censales' %}" class="salto_pagina_texto">Mis datos personales</a> </button>
+{% endblock %}
+
+{% block content %}
+    <div class="contenedor_promedio">
+        <div class="sub_contenedor_promedio">
+            <div>
+                <h2 class="texto_azul">Promedio y porcentaje de avance en la carrera</h2>
+            </div>
+
+            <div class="alerta_promedio">
+                <b>Promedio general en la carrera sin plazos:</b>
+                <span class="nota">{{ materias_aprobadas.promedio }}</span>
+            </div><br>
+
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th style="text-align: left">Certificado</th>
+                        <th style="text-align: left">Orientación</th>
+                        <th class="texto_centro">Ori.Elegida</th>
+                        <th class="texto_centro">%de Avance</th>
+                        <th class="texto_centro">Aprobadas</th>
+                        <th class="texto_centro">Promedio sin aplazos</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>{{ usuario.id_carrera.nombre_carrera }}</td>
+                        <td></td>
+                        <td class="texto_centro">No</td>
+                        <td class="texto_centro">{{ materias_aprobadas.porcentaje_aprobadas }}</td>
+                        <td class="texto_centro">{{ materias_aprobadas.materias_aprobadas }}</td>
+                        <td class="texto_centro">{{ materias_aprobadas.promedio }}</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+{% endblock %}
