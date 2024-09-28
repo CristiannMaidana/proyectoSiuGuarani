@@ -1,0 +1,105 @@
+    /* CSS de conetendor_alumno*/
+.contenedor_alumno_principal {
+    width: 1309px; /* Ancho del contenido principal */
+    height: 84px; /* Altura del contenedor */
+    display: flex; /* Utilizamos flexbox para centrar verticalmente */
+    background-color: #F8F8F8; /* Color de fondo */
+    align-items: center; /* Centrar verticalmente */
+    justify-content: center; /* Centrar horizontalmente */
+    margin: 0 auto; /* Centrar el contenedor en la página */
+    position: relative; /* Necesario para los seudoelementos */
+    z-index: 1; /* Asegura que el contenido principal esté sobre los seudoelementos */
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1); /* Sombra opcional */
+}
+.sub_contenedor_alumno_principal{
+    width: 1170px;
+    height: 60px;
+    display: flex;
+    justify-content: space-between; /* Distribuye los elementos a lo largo del contenedor */
+    align-items: center; /* Centra verticalmente los elementos */
+}
+.logo_untdf{
+    width: 270px;
+    height: auto;
+    float: left;
+}
+
+/*Para extender los bordes*/
+.contenedor_alumno_principal::before,
+.contenedor_alumno_principal::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    width: calc(50vw - 654.5px); /* Calculamos la mitad del espacio restante */
+    background-color: #F8F8F8; /* Color de fondo para los bordes extendidos */
+}
+
+.contenedor_alumno_principal::before {
+    left: +100%; /* Extiende hacia la izquierda */
+}
+
+.contenedor_alumno_principal::after {
+    right: +100%; /* Extiende hacia la derecha */
+}
+
+/*Contedor de navegarod*/
+.navegador {
+    width: 100%; /* Ancho completo de la página */
+    height: 42px;
+    background-color: #F8F8F8; /* Color de fondo del navegador */
+    border: 1px solid rgb(212, 212, 212);
+    box-shadow: rgba(0, 0, 0, 0.067)  0px 1px 4px 0px;
+    position: relative; /* Posición relativa para los seudoelementos */
+}
+
+.navegador::before,
+.navegador::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    width: calc((100vw - 1309px) / 2); /* Calcula el ancho de los bordes */
+    background-color: #F8F8F8; /* Color de fondo para los bordes extendidos */
+}
+
+.navegador::before {
+    left: 0; /* Extiende hacia la izquierda */
+}
+
+.navegador::after {
+    right: 0; /* Extiende hacia la derecha */
+}
+
+.sub_navegador {
+    width: 1170px; /* Ancho del subnavegador */
+    height: 40px; /* Altura del subnavegador */
+    margin: 0 auto; /* Centrar horizontalmente */
+}
+
+.boton_pagina_actual {
+    background-color: rgb(0, 136, 204);
+    color: rgb(51, 51, 51);
+    display: flex; /* Usamos flexbox para centrar vertical y horizontalmente */
+    align-items: center; /* Centramos verticalmente el contenido */
+    justify-content: center; /* Centramos horizontalmente el contenido */
+    font-size: 13px;
+    height: 40px;
+    line-height: 20px; /* Ajustamos según sea necesario */
+    text-align: center; /* Centramos el texto horizontalmente */
+    width: 73.6406px;
+    padding: 10px 15px; /* Ajustamos los padding */
+    text-decoration: none; /* Quitamos la decoración de texto */
+    text-decoration-color: rgb(255, 255, 255);
+    text-decoration-style: solid;
+    text-decoration-thickness: auto;
+    text-shadow: none;
+    border: none; /* Quitamos el borde si no es necesario */
+}
+
+.link {
+    color: #FFFFF7;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+}
