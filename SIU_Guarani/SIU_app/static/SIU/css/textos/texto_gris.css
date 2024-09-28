@@ -1,0 +1,10 @@
+.texto_gris{
+    width: 830px;
+    height: 25px;
+    color: #969696;
+    margin-left: 10px;
+    font-size: 18px;
+    margin-bottom: 10px;
+    line-height: 24px;
+    border-bottom: 1px solid #cccccc;
+}
