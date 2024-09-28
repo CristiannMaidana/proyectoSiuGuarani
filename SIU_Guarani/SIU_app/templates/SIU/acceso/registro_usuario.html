@@ -1,0 +1,436 @@
+{% extends 'SIU/templates_base/acceso_base.html' %}
+
+{% block title %} SIU-Guaraní - Crear nuevo usuario {% endblock %}
+
+
+{% block content %}
+    <style>
+        .contenedor_principal{
+            width: 1170px;
+            height: 1587px;
+            display: flow;
+            margin-left: auto; /* Margen izquierdo automático */
+            margin-right: auto; /* Margen derecho automático */
+            align-items: center;
+            justify-content: center;
+        }
+        .titulo_operaciones{
+            width: 1170px;
+            height: 55px;
+        }
+        .sub_contenedor_dos_columnas{
+            width: 1170px;
+            height: 1532px;
+            display: flex;
+            margin-left: auto; /* Margen izquierdo automático */
+            margin-right: auto; /* Margen derecho automático */
+            justify-content: space-between;
+        }
+
+
+        .columna_texto{
+            width: 270px;
+            height: 480px;
+            display: flex;
+            align-content: center;
+            align-items: center;
+        }
+        .sub_columna_texto{
+            width: 270px;
+            height: 460px;
+            background: #F5F5F5;
+            border-radius: 5px;
+            border: 1px solid #E3E3E3;
+            display: flex;
+            align-content: center;
+            align-items: center;
+        }
+        .mensaje{
+            width: 230px;
+            height: 420px;
+            margin-left: auto; /* Margen izquierdo automático */
+            margin-right: auto; /* Margen derecho automático */
+        }
+
+
+        .columna_datos_alumno{
+            width: 870px;
+            min-height: 1532px;
+            align-items: center;
+            align-content: center;
+
+        }
+        .sub_columna_datos_alumno{
+            width: 870px;
+            min-height: 1502px;
+        }
+
+        .form_datos_alumno{
+            width: 870px;
+            height: 1424px;
+        }
+
+        .tabla_datos_personales{
+            width: 870px;
+            min-height: 380px;
+            border: 1px solid #E3E3E3;
+            border-radius: 5px;
+            background: #F5F5F5;
+        }
+        .sub_tabla_datos_personales{
+            width: 830px;
+            min-height: 300px;
+            display: flow;
+            margin-left: auto; /* Margen izquierdo automático */
+            margin-right: auto; /* Margen derecho automático */
+        }
+
+
+        .contenido{
+            width: 830px;
+            min-height: 75px;
+            display: block; /* Asegura que el contenedor crezca con el contenido */
+            align-items: center;
+            align-content: center;
+        }
+        .sub_contenido{
+            width: 404px;
+            min-height: 65px;
+            align-content: center;
+        }
+
+
+        .tabla_datos_nacimiento{
+            width: 870px;
+            min-height: 220px;
+            background: #F5F5F5;
+            border-radius: 5px;
+            border: 1px solid #E3E3E3;
+        }
+        .sub_tabla_datos_nacimiento{
+            width: 830px;
+            min-height: 160px;
+            display: flow;
+            margin-left: auto; /* Margen izquierdo automático */
+            margin-right: auto; /* Margen derecho automático */
+        }
+
+
+        .tabla_datos_contacto{
+            width: 870px;
+            min-height: 300px;
+            border: 1px solid #E3E3E3;
+            border-radius: 5px;
+            background: #F5F5F5;
+        }
+        .sub_tabla_datos_contacto{
+            width: 830px;
+            min-height: 225px;
+            display: flow;
+            margin-left: auto; /* Margen izquierdo automático */
+            margin-right: auto; /* Margen derecho automático */
+        }
+
+
+
+        .tabla_elijo_carrera{
+            width: 870px;
+            height: 155px;
+            border: 1px solid #E3E3E3;
+            border-radius: 5px;
+            background: #F5F5F5;
+        }
+        .sub_tabla_elijo_carrera {
+            width: 830px;
+            height: 125px;
+            display: flow;
+            margin-left: auto; /* Margen izquierdo automático */
+            margin-right: auto; /* Margen derecho automático */
+        }
+        .error-message {
+            font-size: 13px;
+            color: #B00000;
+            margin-top: 5px;
+        }
+        .centrar_texto {
+            text-align: center;
+        }
+    </style>
+
+    <div class="contenedor_principal">
+        <div class="titulo_operaciones">
+            <h2 class="texto_azul">Crear nuevo usuario</h2>
+        </div>
+        <div class="sub_contenedor_dos_columnas">
+            <!--Columna de texto alerta inscripcion-->
+            <div class="columna_texto">
+                <div class="sub_columna_texto">
+                    <div class="mensaje">
+                        Para acceder a la inscripción a cursos es necesario que poseas un usuario para acceder al sistema.
+                        <br>
+                        <strong>Si ya estás registrado (por ejemplo, si ya sos
+                                alumno de la Institución) no es necesario que
+                                completes este formulario.</strong>
+                        <br>
+                        Si no lo poseés, completá tus datos y te enviaremos un mail a la dirección que ingreses.
+                        <br>
+                        Por favor, validá que el mail que consignes funcione correctamente, ya que allí te enviaremos los datos de acceso.
+                        <br>
+                        Completá los datos de este formulario con atención. <strong>LUEGO NO PODRÁS MODIFICARLOS</strong>
+                    </div>
+                </div>
+            </div>
+            <!--Carga del formulario-->
+            <div class="columna_datos_alumno">
+                <div class="sub_columna_datos_alumno">
+                    <!--Nota alerta atencion-->
+                    <div class="nota_alerta">
+                        <div class="sub_nota_alerta"><strong> ATENCIÓN</strong>: los datos cargados en esta pantalla no podrán ser modificados posteriormente.
+                            Por favor, verificá que los mismos sean correctos antes de generar el usuario.</div>
+                    </div><br>
+                    <!--Muestro mensaje si falla el formulario-->
+                    {% if error %}
+                    	<div class="fallos_formulario">
+                            <p class="centrar_texto">Se han encontrado errores. Por favor, verificá el formulario.</p>
+                        </div><br>
+                    {% endif %}
+                    <!--Formularios-->
+                    <form method="post" class="form_datos_alumno"> {% csrf_token %}
+                        <div class="tabla_datos_personales">
+                            <h3 class="texto_gris">Datos personales</h3>
+                            <div class="sub_tabla_datos_personales">
+                                <div class="contenido">
+                                    <div class="sub_contenido">
+                                        <label for="{{ form.name }}"><strong>{{ form.genero_select.label }}</strong> </label><br>
+                                        {{ form.genero_select }}
+                                    </div>
+                                </div>
+                                <div class="contenido">
+                                    <div class="sub_contenido">
+                                        <label for="{{ form.name }}"><strong>{{ form.nacionalidad_select.label }}</strong></label><br>
+                                        {{ form.nacionalidad_select }}
+                                    </div>
+                                </div>
+                                <div class="contenido">
+                                    <div class="sub_contenido" style="float: left">
+                                        <label for="{{ form.name }}"><strong>{{ form.documento_select.label }}</strong> </label><br>
+                                        {{ form.documento_select }}
+                                    </div>
+                                    <!--Muestro el documento si es invalido-->
+                                    {% if  form.documento_usuario.errors %}
+                                        <div class="sub_contenido" style="float: right;">
+                                            <label for="{{ form.name }}"><strong>{{ form.documento_usuario.label }}</strong> </label><br>
+                                            {{ form.documento_usuario }}
+                                            <p class="error-message">{{ form.documento_usuario.errors.0 }}</p>
+                                        </div>
+                                    {% else %}
+                                        <div class="sub_contenido" style="float: right;">
+                                            <label for="{{ form.name }}"><strong>{{ form.documento_usuario.label }}</strong> </label><br>
+                                            {{ form.documento_usuario }}
+                                        </div>
+                                    {% endif %}
+                                </div>
+                                <div class="contenido">
+                                    <div class="sub_contenido" style="float: left">
+                                        {% if form.apellido_usuario.errors %}
+                                            <label for="{{ form.name }}"><strong>{{ form.apellido_usuario.label }}</strong> </label><br>
+                                            {{ form.apellido_usuario }}
+                                            <p class="error-message">{{ form.apellido_usuario.errors.0 }}</p>
+                                        {% else %}
+                                            <label for="{{ form.name }}"><strong>{{ form.apellido_usuario.label }}</strong> </label><br>
+                                            {{ form.apellido_usuario }}
+                                        {% endif %}
+                                    </div>
+                                    <div class="sub_contenido" style="float: right;">
+                                        {% if form.nombre_usuario.errors %}
+                                            <label for="{{ form.name }}"><strong>{{ form.nombre_usuario.label }}</strong> </label><br>
+                                            {{ form.nombre_usuario }}
+                                            <p class="error-message">{{ form.nombre_usuario.errors.0 }}</p>
+                                        {% else %}
+                                            <label for="{{ form.name }}"><strong>{{ form.nombre_usuario.label }}</strong> </label><br>
+                                            {{ form.nombre_usuario }}
+                                        {% endif %}
+                                    </div>
+                                </div>
+                            </div>
+                        </div><br>
+
+                        <div class="tabla_datos_nacimiento">
+                            <h3 class="texto_gris">Datos de nacimiento</h3>
+                            <div class="sub_tabla_datos_nacimiento">
+                                <div class="contenido">
+                                    <div class="sub_contenido">
+                                        <label><strong>Fecha(*)</strong> </label><br>
+                                        <input type="text" id="fechaNacimiento" name="fechaNacimiento" class="input">
+                                    </div>
+                                </div>
+                                <div class="contenido">
+                                    <div class="sub_contenido" style="float: left">
+                                        <label for="{{ form.name }}"><strong>{{ form.pais_usuario.label }}</strong> </label><br>
+                                        {{ form.pais_usuario }}
+                                    </div>
+                                    <div class="sub_contenido" style="float: right">
+                                        {% if form.localidad_usuario.errors %}<!--Si hay un error de validacion en el formulario-->
+                                            <label for="{{ form.name }}"><strong>{{ form.localidad_usuario.label }}</strong></label><br>
+                                            {{ form.localidad_usuario }}
+                                            <p class="error-message">{{ form.localidad_usuario.errors.0 }}</p>
+                                        {% else %}<!--Si no hay un error de validacion en el formulario-->
+                                            <label for="{{ form.name }}"><strong>{{ form.localidad_usuario.label }}</strong></label><br>
+                                            {{ form.localidad_usuario }}
+                                        {% endif %}
+                                    </div>
+                                </div><br>
+                            </div>
+                        </div><br>
+
+                        <div class="tabla_datos_contacto">
+                            <h3 class="texto_gris">Datos del usuario</h3>
+                            <div class="sub_tabla_datos_contacto">
+                                <!--Carga de correos del usuario-->
+                                <div class="contenido">
+                                    {% if form.repito_mail_usuario.errors %}<!--Si esta mal ingresado los correso-->
+                                        <div class="sub_contenido" style="float: left">
+                                            <label for="{{ form.name }}" ><strong>{{ form.mail_usuario.label }}</strong> </label><br>
+                                            {{ form.mail_usuario }}
+                                            <p class="error-message">{{ form.repito_mail_usuario.errors.0 }}</p>
+                                        </div>
+                                        <div class="sub_contenido" style="float: right">
+                                            <label for="{{ form.name }}" ><strong>{{ form.repito_mail_usuario.label }}</strong> </label><br>
+                                            {{ form.repito_mail_usuario }}
+                                            <p class="error-message">{{ form.repito_mail_usuario.errors.0 }}</p>
+                                        </div>
+
+                                    {% else %}<!--Si no hay error en los correos-->
+                                        <div class="sub_contenido" style="float: left">
+                                            <label for="{{ form.name }}" ><strong>{{ form.mail_usuario.label }}</strong> </label><br>
+                                            {{ form.mail_usuario }}
+                                        </div>
+                                        <div class="sub_contenido" style="float: right">
+                                            <label for="{{ form.name }}" ><strong>{{ form.repito_mail_usuario.label }}</strong> </label><br>
+                                                {{ form.repito_mail_usuario }}
+                                        </div>
+                                    {% endif %}
+                                </div>
+                                <div class="contenido">
+                                    <div class="sub_contenido" style="float: left">
+                                        {% if form.username.errors %}
+                                            <label for="{{ form.name }}"><strong>{{ form.username.label }}</strong> </label><br>
+                                            {{ form.username }}
+                                            <p class="error-message">{{ form.username.errors.0 }}</p>
+                                        {% else %}
+                                            <label for="{{ form.name }}"><strong>{{ form.username.label }}</strong> </label><br>
+                                            {{ form.username }}
+                                        {% endif %}
+                                    </div>
+                                    <div class="sub_contenido" style="float: right">
+                                        {% if form.numero_usuario.errors %}
+                                            <label for="{{ form.name }}"><strong>{{ form.numero_usuario.label }}</strong> </label><br>
+                                            {{ form.numero_usuario }}
+                                            <p class="error-message">{{ form.numero_usuario.errors.0 }}</p>
+                                        {% else %}
+                                            <label for="{{ form.name }}"><strong>{{ form.numero_usuario.label }}</strong> </label><br>
+                                            {{ form.numero_usuario }}
+                                        {% endif %}
+                                    </div>
+                                </div>
+                                <div class="contenido">
+                                    <div class="sub_contenido" style="float: left;">
+                                        {% if form.password1.errors %}
+                                            <label for="{{ form.name }}"><strong>{{ form.password1.label }}</strong> </label><br>
+                                            {{ form.password1 }}
+                                            <p class="error-message">{{ form.password1.errors.0 }}</p>
+                                        {% else %}
+                                            <label for="{{ form.name }}"><strong>{{ form.password1.label }}</strong> </label><br>
+                                            {{ form.password1 }}
+                                        {% endif %}
+                                    </div>
+                                    <div class="sub_contenido" style="float: right">
+                                        {% if form.password2.errors %}
+                                            <label for="{{ form.name }}"><strong>{{ form.password2.label }}</strong> </label><br>
+                                            {{ form.password2 }}
+                                            <p class="error-message">{{ form.password2.errors.0 }}</p>
+                                        {% else %}
+                                            <label for="{{ form.name }}"><strong>{{ form.password2.label }}</strong> </label><br>
+                                            {{ form.password2 }}
+                                        {% endif %}
+                                    </div>
+                                </div>
+                            </div>
+                        </div><br>
+
+                        <div class="tabla_elijo_carrera">
+                            <h3 class="texto_gris">Tipo de curso </h3>
+                            <div class="sub_tabla_elijo_carrera">
+                                <div class="contenido">
+                                    <div class="sub_contenido" style="float: left">
+                                        <label><strong>{{ form.carrera_select.label }}</strong></label>
+                                        {{ form.carrera_select }}
+                                    </div>
+                                </div>
+                            </div>
+                        </div><br><hr>
+
+                        <button class="boton" style="float: right"><a href="{% url 'SIU:acceso' %}" style= "text-decoration: none; color: white">Cancelar</a></button>
+                        <button class="boton" style="float: right; margin-right: 10px" type="submit">Aceptar</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- jQuery and jQuery UI JS -->
+    <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
+    <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+
+    <!-- jQuery UI datepicker localization for Spanish -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jqueryui/1.12.1/i18n/jquery-ui-i18n.min.js"></script>
+
+    <script>
+        $(document).ready(function(){
+            // Configurar el datepicker en español
+            $('#fechaNacimiento').datepicker({
+                dateFormat: 'yy-mm-dd',
+                changeMonth: true,
+                changeYear: true,
+                yearRange: "-100:+0",
+                showAnim: "fadeIn",
+                // Configuración específica para español
+                monthNames: ['enero', 'febrero', 'marzo', 'abril', 'mayo', 'junio',
+                             'julio', 'agosto', 'septiembre', 'octubre', 'noviembre', 'diciembre'],
+                monthNamesShort: ['ene', 'feb', 'mar', 'abr', 'may', 'jun',
+                                  'jul', 'ago', 'sep', 'oct', 'nov', 'dic'],
+                dayNames: ['domingo', 'lunes', 'martes', 'miércoles', 'jueves', 'viernes', 'sábado'],
+                dayNamesMin: ['do', 'lu', 'ma', 'mi', 'ju', 'vi', 'sá'],
+                firstDay: 1 // Primer día de la semana: lunes
+            });
+        });
+    </script>
+
+    <script>
+        window.onload = function() {
+            window.scrollTo(0, 0);
+        }
+    </script>
+    <script>
+        // Función para cerrar la modal
+        function closeModal() {
+            document.getElementById('myModal').style.display = 'none';
+        }
+    </script>
+    <script>
+        input = document.getElementById('pais');
+        if (input) {
+                // Agregar la clase no-select
+                input.classList.add('no-select');
+
+                // Hacer que el input sea readonly
+                input.readOnly = true;
+
+                input.style.background='#eeeeee';
+                // Prevenir que el input reciba el foco
+                input.addEventListener('focus', function(event) {
+                    event.preventDefault();
+                });
+        }
+    </script>
+{% endblock %}
