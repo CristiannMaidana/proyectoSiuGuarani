@@ -1,0 +1,220 @@
+    /*Para el calendario*/
+    .columna_2{
+        box-sizing: border-box;
+        color: rgb(51, 51, 51);
+        display: block;
+        float: left;
+        height: 661px;
+        margin-left: 30px;
+        min-height: 30px;
+        text-size-adjust: 100%;
+        unicode-bidi: isolate;
+        width: 270px;
+    }
+    .notificaciones{
+        background-color: rgb(240, 245, 249);
+        border-radius: 5px;
+        clear: both;
+        color: rgb(51, 51, 51);
+        display: block;
+        height: 651px;
+        max-width: 500px;
+        min-width: 250px;
+        padding: 5px;
+        text-size-adjust: 100%;
+        unicode-bidi: isolate;
+        width: 250px;
+    }
+    h3{
+        color: rgb(141, 141, 141);
+        display: block;
+        font-size: 18px;
+        font-weight: 700;
+        height: 24px;
+    line-height: 24px;
+        margin-block-end: 10px;
+        margin-block-start: 10px;
+        margin-bottom: 10px;
+        margin-top: 10px;
+        text-rendering: optimizelegibility;
+        text-size-adjust: 100%;
+        unicode-bidi: isolate;
+        width: 250px;
+    }
+
+    .select{
+        align-items: center;
+        appearance: auto;
+        background-color: rgb(255, 255, 255);
+        border: 1px solid rgb(204, 204, 204);
+        box-sizing: border-box;
+        color: rgb(85, 85, 85);
+        cursor: pointer;
+        display: inline-block;
+        float: none;
+        font-feature-settings: normal;
+        font-kerning: auto;
+        font-optical-sizing: auto;
+        font-stretch: 100%;
+        font-weight: 400;
+        height: 30px;
+        letter-spacing: normal;
+        line-height: normal;
+        margin-bottom: 10px;
+        min-height: 30px;;
+        overflow-x: visible;
+        overflow-y: visible;
+        padding: 4px;
+        text-align: start;
+        text-rendering: auto;
+        text-shadow: none;
+        text-size-adjust: 100%;
+        text-transform: none;
+        text-wrap: nowrap;
+        vertical-align: middle;
+        white-space-collapse: preserve;
+        width: 250px;
+        -webkit-rtl-ordering: logical;
+        -webkit-border-image: none;
+    }
+
+    .calendarios{
+        color: rgb(51, 51, 51);
+        display: block;
+        height: 441px;
+        line-height: 20px;
+        text-size-adjust: 100%;
+        unicode-bidi: isolate;
+        width: 250px;
+    }
+
+    .sub_calendarios{
+        color: rgb(51, 51, 51);
+        display: block;
+        height: 389px;
+        overflow-x: hidden;
+        overflow-y: hidden;
+        position: relative;
+        text-size-adjust: 100%;
+        unicode-bidi: isolate;
+        width: 250px;
+    }
+
+    .items{
+        color: rgb(51, 51, 51);
+        display: block;
+        height: 389px;
+        left: 1px;
+        position: absolute;
+        text-size-adjust: 100%;
+        unicode-bidi: isolate;
+        width: 260000px;
+    }
+
+    .panel_actividad{
+        color: rgb(51, 51, 51);
+        display: block;
+        float: left;
+        height: 389px;
+        line-height: 20px;
+        text-size-adjust: 100%;
+        unicode-bidi: isolate;
+        width: 250px;
+    }
+
+    .periodo{
+        color: rgb(51, 51, 51);
+        display: block;
+        height: 127px;
+        margin-top: 15px;
+        text-size-adjust: 100%;
+        unicode-bidi: isolate;
+        width: 250px;
+    }
+
+    .tabla{
+        color: rgb(51, 51, 51);
+        display: block;
+        height: 97px;
+        text-size-adjust: 100%;
+        unicode-bidi: isolate;
+        width: 250px;
+    }
+
+    .fila{
+        color: rgb(51, 51, 51);
+        display: table-row;
+        font-size: 8.5px;
+        height: 25px;
+        line-height: 20px;
+        position: relative;
+        text-size-adjust: 100%;
+        unicode-bidi: isolate;
+        width: 195px;
+    }
+
+    .tit_lateral{
+        border-bottom: 1px solid rgba(0, 0, 0, 0);
+        border-right: 1px solid rgba(0, 0, 0, 0);
+        color: rgb(51, 51, 51);
+        display: block;
+        float: left;
+        font-size: 8.5px;
+        line-height: 20px;
+        text-size-adjust: 100%;
+        unicode-bidi: isolate;
+        width: 50px;
+    }
+
+    .celda{
+        background-color: rgb(255, 255, 255);
+        border: 1px solid rgb(238, 238, 238);
+        color: rgb(51, 51, 51);
+        cursor: pointer;
+        display: block;
+        float: left;
+        font-size: 8.5px;
+        height: 23px;
+        position: relative;
+        text-align: center;
+        text-size-adjust: 100%;
+        unicode-bidi: isolate;
+        width: 23px;
+    }
+
+    .periodo_materias{
+        color: rgb(51, 51, 51);
+        display: block;
+        height: 90px;
+        text-size-adjust: 100%;
+        unicode-bidi: isolate;
+        width: 250px;
+    }
+
+    hr{
+        color: rgb(255, 255, 255);
+        border-bottom-style: solid;
+        border-bottom-width: 1px;
+        border-image-repeat: stretch;
+        border-image-source: none;
+        border-image-width: 1;
+        border-left-color: rgb(51, 51, 51);
+        border-right-color: rgb(51, 51, 51);
+        border-top: 1px solid rgb(238, 238, 238);
+    }
+
+    h4{
+        color: rgb(141, 141, 141);
+        cursor: pointer;
+        display: block;
+        font-weight: 700;
+        height: 20px;
+        margin-block-end: 10px;
+        margin-block-start: 10px;
+        margin-bottom: 10px;
+        margin-top: 10px;
+        text-rendering: optimizelegibility;
+        text-size-adjust: 100%;
+        unicode-bidi: isolate;
+        width: 250px;
+    }
