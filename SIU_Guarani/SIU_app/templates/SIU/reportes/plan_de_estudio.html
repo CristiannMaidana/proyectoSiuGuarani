@@ -1,0 +1,362 @@
+{% extends 'SIU/templates_base/navegador_base.html' %}
+
+{% block title %}SIU Guaraní - Plan de estudios{% endblock %}
+
+{% block style %}
+    .contenedor {
+        width: 1170px;
+        height: 1258px;
+        margin: auto;
+    }
+    .sub_contenedor {
+        width: 1170px;
+        height: 1228px;
+        margin: auto;
+    }
+    .titulo_operacion {
+        width: 1170px;
+        height: 36px;
+    }
+    .tabla_encabezado {
+        width: 1170px;
+        height: 28px;
+    }
+    .tabla_contenedor {
+        border-radius: 10px; /* Bordes circulares */
+        border: 2px solid black; /* Borde del contenedor */
+        width: 1170px;
+        height: auto;
+        overflow: hidden; /* Oculta el contenido que sobresale */
+    }
+    .tabla_plan_de_estudio {
+        width: 1170px;
+        height: 1134px;
+    }
+    .head_tabla_plan_de_estudio {
+        width: 1169px;
+        height: 28px;
+    }
+    .body_tabla_plan_de_estudio {
+        width: 1169px;
+        height: 1104px;
+    }
+    .materias {
+        width: 1169px;
+        height: 29px;
+    }
+    .correlativas {
+        width: 1169px;
+        display: none;
+    }
+    .td_table_correlativas {
+        background: #E5E5E5;
+        width: 1169px;
+    }
+    .titulo_correlativa {
+        width: 1158px;
+        display: flex;
+        justify-content: space-between;
+    }
+    .titulo {
+        width: 150px;
+        float: left;
+    }
+    .boton_verificar {
+        width: 87px;
+        float: right;
+        align-content: center;
+    }
+    .alerta_correlativa {
+        background: rgb(223, 240, 216);
+        width: 1145px;
+        justify-content: center;
+        display: none;
+        border-radius: 5px;
+        height: 100px;
+        text-align: center;
+        align-content: center;
+        color: rgb(70, 136, 71);
+        border: 1px solid #D4E9C1;
+    }
+    .alerta_informacion_correlativa {
+        background: lavenderblush;
+        width: 1145px;
+        text-align: center;
+        color: rgb(185, 74, 72);
+        border: 1px solid #EFCFD4;
+    }
+    .requisitos_opcion1 {
+        background: white;
+        width: 1158px;
+    }
+    .sub_requisitos_opcion1 {
+        background: white;
+        width: 1157px;
+    }
+    .titulo_requisitos_opcion1 {
+        background: white;
+        width: 1157px;
+    }
+    table {
+        border-collapse: collapse; /* Fusiona los bordes de las celdas adyacentes */
+        width: 100%;
+    }
+    th, tr, td{
+        border: 1px solid black;
+        text-align: left;
+        padding: 8px;
+    }
+
+    /* Estilos para la tabla con borde transparente */
+    .tabla_transparente {
+        border-collapse: collapse; /* Combina los bordes de las celdas */
+        border: 2px solid white; /* Borde transparente */
+    }
+{% endblock %}
+
+{% block navegador %}
+    <button class="nueva_pagina"><a href="{% url 'SIU:materia' %}" class="salto_pagina_texto">Inscripción a Materias</a></button>
+    <button class="nueva_pagina"><a href="{% url 'SIU:examen' %}" class="salto_pagina_texto">Inscripción a Exámenes</a></button>
+    <div style="position: relative">
+        <button class="pagina_actual pagina_actual_texto" style="color: white" onclick="mostrarOpciones_navegador()" >Reportes</button>
+        <ul id="lista_opciones_navegador" class="lista_opciones_reportes" style="display: none">
+            <li class="li_lista_opciones_reportes"><a href="{% url 'SIU:plan_estudio' %}">Plan de estudio</a></li>
+            <li class="li_lista_opciones_reportes"><a href="{% url 'SIU:inscripciones' %}">Mis inscripciones</a></li>
+            <li class="li_lista_opciones_reportes"><a href="{% url 'SIU:porcentaje_avance_carrera' %}">Promedio y porcentaje de avance en la carrera</a></li>
+        </ul>
+    </div>
+    <button class="nueva_pagina"><a href="{% url 'SIU:datos_censales' %}" class="salto_pagina_texto">Mis datos personales</a> </button>
+{% endblock %}
+
+{% block content %}
+    <div class="contenedor">
+        <div class="sub_contenedor">
+            <div class="titulo_operacion">
+                <h2 class="texto_azul">Plan de estudio</h2>
+            </div>
+            <table class="tabla_encabezado">
+                <tbody>
+                    <tr style="border: none;">
+                        <td style="border: none;"><b>Propuesta:</b> "(004) Licenciatura en Sistemas (con Orientación Calidad del Software)"</td>
+                        <td style="border: none;"><b>Plan:</b> "(04) Licenciatura en Sistemas (con orientación Calidad del Software)"</td>
+                        <td style="border: none;"><b>Versión:</b> " 3"</td>
+                    </tr>
+                </tbody>
+            </table><br>
+            <div class="tabla_contenedor">
+                <table class="tabla_plan_de_estudio tabla_transparente">
+                    <thead class="head_tabla_plan_de_estudio">
+                        <tr>
+                            <th title="Actividad">Actividad</th>
+                            <th title="Tipo">Tipo</th>
+                            <th title="Año">Año</th>
+                            <th title="Período">Período</th>
+                            <th title="Nota">Nota</th>
+                            <th title="Origen">Origen</th>
+                            <th title="Créditos">Créditos</th>
+                            <th title="Puntaje">Puntaje</th>
+                            <th title="Correlativas">Correlativas</th>
+                        </tr>
+                    </thead>
+                    <tbody class="body_tabla_plan_de_estudio">
+                        {% for tupla in plan_de_estudio %}
+                            <tr class="materias">
+                                <td>{{ tupla.id_materia.nombre_materia }}</td>
+                                <td>Materia</td>
+                                <td>{{ tupla.id_annio.numero_annio }}</td>
+                                <td>{{ tupla.id_cuatrimestre.nombre_cuatrimestre }}</td>
+                                <!--{% for historial in historial_academico %}
+                                    {% if forloop.last and historial.id_cursada_alumno.id_materia_con_parcial.id_materia.nombre_materia != tupla.id_materia.nombre_materia%}
+                                         <td></td>
+                                        <td></td>
+                                        <td></td>
+                                        <td></td>
+                                    {% endif %}
+                                        {% if historial.id_cursada_alumno.id_materia_con_parcial.id_materia.nombre_materia == tupla.id_materia.nombre_materia %}
+                                            {% if historial.id_cursada_alumno.aprobo %}
+                                                {% with historial.id_cursada_alumno.id_materia_con_parcial.id_segundo_parcial.nota_parcial as nota_parcial %}
+                                                    {% if nota_parcial %}
+                                                        <td>{{ historial.id_cursada_alumno.id_materia_con_parcial.id_segundo_parcial.nota_parcial }}</td>
+                                                        <td>Regularidad</td>
+
+                                                    {% endif %}
+                                                {% endwith %}
+                                            {% endif %}
+                                            {% if historial.id_cursada_alumno.inscripto %}
+                                                <td></td>
+                                                <td>En Curso</td>
+                                                <td></td>
+                                                <td></td>
+                                            {% endif %}
+                                        {% endif %}
+                                {% endfor %}-->
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                {% if tupla.id_materia.correlativa.nombre_materia %}
+                                    <td style="text-align: center"><button class="boton" style="width: 50px" onclick="consultoCorrelativa(this, 'elemento-{{ tupla.id_materia.correlativa }}')">Ver</button></td>
+                                {% else %}
+                                    <td></td>
+                                {% endif %}
+                            </tr>
+                            <!-- Correlativas -->
+                            <tr id="elemento-{{ tupla.id_materia.correlativa }}" class="correlativas" style="display: none;">
+                                <td colspan="9" class="td_table_correlativas">
+                                    <!-- Tabla para verificar correlativa regularizada -->
+                                    <div class="titulo_correlativa">
+                                        <div class="titulo">
+                                            <h3>Para cursar</h3>
+                                        </div>
+                                        <div class="boton_verificar">
+                                            <form id="formulario-regularizada-{{ tupla.id_materia.correlativa }}" method="POST">{% csrf_token %}
+                                                <input type="hidden" name="materia_correlativa" value="{{ tupla.id_materia.correlativa.nombre_materia }}">
+                                                <input type="hidden" name="solicitud_correlativa" value="True">
+                                            </form>
+                                            <button class="boton" style="background: #363636" onclick="botonVerificacion('condicion_correlativa_regularizada-{{ tupla.id_materia.correlativa }}', 'titulo_correlativa_regularizada-{{ tupla.id_materia.correlativa }}', 'formulario-regularizada-{{ tupla.id_materia.correlativa }}')">Verificar</button>
+                                        </div>
+                                    </div>
+                                    <div id="condicion_correlativa_regularizada-{{ tupla.id_materia.correlativa }}" class="alerta_correlativa" style="display: none">
+                                        <h4 id="titulo_correlativa_regularizada-{{ tupla.id_materia.correlativa }}"></h4>
+                                        <p style="text-align: center">
+                                            <button class="boton" style="background: white; color: black" type="button" onclick="botonOcultarVerificacion('condicion_correlativa_regularizada-{{ tupla.id_materia.correlativa }}')">Ocultar</button>
+                                        </p>
+                                    </div>
+                                    <h4>Opción 1</h4>
+                                    <table class="requisitos_opcion1 sin-borde-externo">
+                                        <tbody class="sub_requisitos_opcion1">
+                                            <tr class="titulo_requisitos_opcion1">
+                                                <th>Requisito</th>
+                                                <th>Condición</th>
+                                            </tr>
+                                            <tr>
+                                                <td>{{ tupla.id_materia.correlativa.nombre_materia }}</td>
+                                                <td style="text-align: center">
+                                                    <b>Regularizada</b>
+                                                </td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                    <!-- /Tabla para verificar correlativa regularizada -->
+
+                                    <!-- Tabla para verificar correlativa aprobada -->
+                                    <div class="titulo_correlativa">
+                                        <div class="titulo">
+                                            <h3>Para aprobar</h3>
+                                        </div>
+                                        <div class="boton_verificar">
+                                            <form id="formulario-aprobada-{{ tupla.id_materia.correlativa }}" method="POST">{% csrf_token %}
+                                                <input type="hidden" name="materia_correlativa" value="{{ tupla.id_materia.correlativa.nombre_materia }}">
+                                                <input type="hidden" name="solicitud_examen" value="True">
+                                            </form>
+                                            <button class="boton" style="background: #363636" onclick="botonVerificacionAprobada('condicion_correlativa_aprobada-{{ tupla.id_materia.correlativa }}', 'titulo_correlativa_aprobada-{{ tupla.id_materia.correlativa }}', 'formulario-aprobada-{{ tupla.id_materia.correlativa }}')">Verificar</button>
+                                        </div>
+                                    </div>
+                                    <div id="condicion_correlativa_aprobada-{{ tupla.id_materia.correlativa }}" class="alerta_correlativa" style="display: none">
+                                        <h4 id="titulo_correlativa_aprobada-{{ tupla.id_materia.correlativa }}"></h4>
+                                        <p style="text-align: center">
+                                            <button class="boton" style="background: white; color: black" type="button" onclick="botonOcultarVerificacion('condicion_correlativa_aprobada-{{ tupla.id_materia.correlativa }}')">Ocultar</button>
+                                        </p>
+                                    </div>
+                                    <h4>Opción 1</h4>
+                                    <table class="requisitos_opcion1">
+                                        <tbody class="sub_requisitos_opcion1">
+                                            <tr class="titulo_requisitos_opcion1">
+                                                <th>Requisito</th>
+                                                <th>Condición</th>
+                                            </tr>
+                                            <tr>
+                                                <td>{{ tupla.id_materia.correlativa.nombre_materia }}</td>
+                                                <td style="text-align: center">
+                                                    <b>Aprobada</b>
+                                                </td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                    <!-- /Tabla para verificar correlativa aprobada -->
+                                </td>
+                            </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+<script>
+    function botonVerificacion(condicionId, tituloId, formulario) {
+        let form = document.getElementById(formulario);
+        let alerta = document.getElementById(condicionId);
+        let titulo = document.getElementById(tituloId);
+
+        fetch(window.location.href, {
+            method: 'POST',
+            body: new FormData(form),
+            headers: {
+                'X-Requested-With': 'XMLHttpRequest'
+            }
+        })
+        .then(response => response.json())
+        .then(data => {
+            if (data.correlativa_llamado) {
+                alerta.style.display = 'block';
+                if (data.cumple_regularizada) {
+                    titulo.innerText = 'Cumplís con las correlativas para cursar esta actividad';
+                } else {
+                    alerta.classList.add('alerta_informacion_correlativa');
+                    titulo.innerText = 'Debés las siguientes correlativas de cursada: ' + data.nombre_correlativa + ' (Regularizada)';
+                }
+            }
+        })
+    }
+
+    function botonOcultarVerificacion(condicionId) {
+        let verificacionCorrelativa = document.getElementById(condicionId);
+        verificacionCorrelativa.style.display = 'none';
+    }
+
+    function botonVerificacionAprobada(condicionId, tituloId, formulario) {
+        let form = document.getElementById(formulario);
+        let alerta = document.getElementById(condicionId);
+        let titulo = document.getElementById(tituloId);
+
+        fetch(window.location.href, {
+            method: 'POST',
+            body: new FormData(form),
+            headers: {
+                'X-Requested-With': 'XMLHttpRequest'
+            }
+        })
+        .then(response => response.json())
+        .then(data => {
+            if (data.correlativa_llamado) {
+                alerta.style.display = 'block';
+                if (data.cumple_examen) {
+                    titulo.innerText = 'Cumplís con las correlativas para rendir el examen de esta actividad';
+                } else {
+                    alerta.classList.add('alerta_informacion_correlativa');
+                    titulo.innerText = 'Debés las siguientes correlativas aprobadas: ' + data.nombre_correlativa + ' (Aprobada)';
+                }
+            }
+        })
+    }
+
+    function botonOcultarVerificacionAprobado(condicionId) {
+        var verificacionCorrelativa = document.getElementById(condicionId);
+        verificacionCorrelativa.style.display = 'none';
+    }
+</script>
+<script>
+    function consultoCorrelativa(button, correlativaId) {
+        let filaCorrelativa = document.getElementById(correlativaId);
+        if (filaCorrelativa.style.display === "none") {
+            filaCorrelativa.style.display = "table-row";
+            button.style.width = '80px';
+            button.textContent = "Ocultar";
+        } else {
+            filaCorrelativa.style.display = "none";
+            button.style.width = '50px';
+            button.textContent = "Ver";
+        }
+    }
+</script>
+{% endblock %}
