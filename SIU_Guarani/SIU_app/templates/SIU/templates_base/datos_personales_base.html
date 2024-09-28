@@ -1,0 +1,289 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}SIU Guaraní{% endblock %}</title>
+    <link rel="icon" href="{% static 'SIU/imagenes/favicon.ico' %}">
+    <link rel="stylesheet" type="text/css" href="{% static 'SIU/css/navegadores/columna_navegador_datos_personales.css' %}">
+    <link rel="stylesheet" type="text/css" href="{% static 'SIU/css/navegadores/navegador_alumno.css' %}">
+    <link rel="stylesheet" type="text/css" href="{% static 'SIU/css/navegadores/navegador_paginas.css' %}">
+    <link rel="stylesheet" type="text/css" href="{% static 'SIU/css/inputs/inputs.css' %}">
+    <link rel="stylesheet" type="text/css" href="{% static 'SIU/css/inputs/inputs_numericos.css' %}">
+    <link rel="stylesheet" type="text/css" href="{% static 'SIU/css/inputs/boton.css' %}">
+    <link rel="stylesheet" type="text/css" href="{% static 'SIU/css/textos/texto_azul.css' %}">
+    <link rel="stylesheet" type="text/css" href="{% static 'SIU/css/textos/texto_gris.css' %}">
+    <link rel="stylesheet" type="text/css" href="{% static 'SIU/css/cuerpo.css' %}">
+    <script src="{% static 'SIU/java_script/Opciones_alumno_navegador.js' %}"></script>
+
+</head>
+<style>
+    .contenedor{
+        width: 1170px;
+        height: 870px;
+        display: flex;
+        margin-left: auto; /* Margen izquierdo automático */
+        margin-right: auto; /* Margen derecho automático */
+    }
+    .sub_contenedor{
+        width: 1170px;
+        height: 800px;
+        margin-left: auto; /* Margen izquierdo automático */
+        margin-right: auto; /* Margen derecho automático */
+        align-items: center;
+        justify-content: center;
+    }
+    .titulo_operacion{
+        width: 1170px;
+        height: 44px;
+        display: flex;
+        justify-items: center;
+        align-items: center;
+    }
+    .sub_titulo_operacion{
+        width: 1170px;
+        height: 36px;
+        display: flex;
+        justify-items: center;
+        align-items: center;
+        margin-bottom: -8px;
+        border-bottom: 1px solid rgb(238, 238, 238);
+    }
+    .titulo{
+        width: 570px;
+        height: 35px;
+        display: flex;
+        align-items: center;
+        justify-items: center;
+        line-height: 20px;
+        box-sizing: border-box;
+    }
+
+    .dos_columnas{
+        width: 1170px;
+        height: 644px;
+        display: flex;
+    }
+
+    .nota_alerta{
+        width: 870px;
+        height: 58px;
+        background: #D9EDF7;
+        display: flex;
+        border-radius: 5px;
+        margin-top: 10px;
+    }
+    .sub_nota_alerta{
+        width: 820px;
+        height: 40px;
+        text-align: center;
+        align-self: center;
+    }
+
+    .columna_datos_personales{
+        width: 870px;
+        height: 800px;
+        margin-left: 20px;
+    }
+    .sub_columna_datos_personales{
+        width: 870px;
+        height: 800px;
+        margin-left: 20px;
+    }
+
+    .titulo_edicion_datos_personales{
+        width: 870px;
+        height: 41px;
+        display: flex;
+        align-items: center;
+        align-content: center;
+        justify-content: space-between;
+        border-bottom: 1px solid rgb(238, 238, 238);
+    }
+
+    /* Estilo para la ventana emergente */
+    .custom-alert {
+        position: fixed;
+        top: -100px; /* Inicialmente fuera de la pantalla */
+        left: 50%;
+        transform: translateX(-50%);
+        padding: 4px;
+        background-color: #D9EDF7;
+        border: 1px solid #ccc;
+        border-radius: 5px;
+        box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+        z-index: 9999;
+        transition: top 0.5s ease; /* Animación de entrada */
+        font-size: 14px;
+        color: #42ADE8;
+    }
+    /* Estilo para el botón de cerrar */
+    .custom-alert .closebtn {
+        position: absolute;
+        top: 5px;
+        right: 10px;
+        cursor: pointer;
+    }
+
+    {% block style %}
+
+
+    {% endblock %}
+
+    a{
+        text-decoration: none;
+        color: black;
+    }
+
+    li{
+        list-style: none; /* Elimina las viñetas */
+    }
+</style>
+<body>
+    <div class="contenedor_alumno_principal">
+        <div class="sub_contenedor_alumno_principal">
+            <div class="logo_untdf">
+                <a href="{% url 'SIU:inicio_alumno' %}"><img src="{% static 'SIU/imagenes/logo-transparente.png' %}"></a>
+            </div>
+            <div class="datos_alumno">
+                <div class="opciones_alumno">
+                    <button onclick="mostrarOpciones_alumno()" class="boton-sin-contorno">{{ usuario.nombre }} {{ usuario.apellido }}</button>
+                    <ul id="lista_opciones_alumno" class="lista_opciones_reportes" style="display: none">
+                            <li class="li_lista_opciones_alumno"><a href="{% url 'SIU:configuracion' %}"> Configuración</a></li>
+                            <li class="li_lista_opciones_alumno"><a href="{% url 'SIU:cerrar_sesion' %}">Cerrar sesión</a></li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="navegador">
+        <div class="sub_navegador">
+            <button class="nueva_pagina"><a href="{% url 'SIU:materia' %}" class="salto_pagina_texto">Inscripción a Materias</a></button>
+            <button class="nueva_pagina"><a href="{% url 'SIU:examen' %}" class="salto_pagina_texto">Inscripción a Exámenes</a></button>
+            <div style="position: relative">
+                <button class="nueva_pagina salto_pagina_texto" onclick="mostrarOpciones_navegador()" >Reportes</button>
+                <ul id="lista_opciones_navegador" class="lista_opciones_reportes" style="display: none">
+                    <li class="li_lista_opciones_reportes"><a href="{% url 'SIU:plan_estudio' %}">Plan de estudio</a></li>
+                    <li class="li_lista_opciones_reportes"><a href="{% url 'SIU:inscripciones' %}">Mis inscripciones</a></li>
+                    <li class="li_lista_opciones_reportes"><a href="{% url 'SIU:porcentaje_avance_carrera' %}">Promedio y porcentaje de avance en la carrera</a></li>
+                </ul>
+            </div>
+            <button class="pagina_actual"><a href="{% url 'SIU:datos_censales' %}" class="pagina_actual_texto">Mis datos personales</a> </button>
+        </div>
+    </div>
+
+    <!-- La alerta si se guardan los cambios -->
+    <div id="customAlert" class="custom-alert">
+        <span class="closebtn" onclick="cerrarAlerta()">&times;</span>
+        <p id="alerta_texto"></p>
+    </div>
+
+    <!--Contenedor principal de la pagina-->
+    <div class="contenedor">
+        <div class="sub_contenedor">
+            <div class="titulo_operacion">
+                <div class="sub_titulo_operacion">
+                    <div class="titulo">
+                        <h2 class="texto_azul" style="border-bottom: none">Mis datos personales</h2>
+                    </div>
+                </div>
+            </div><br>
+            <div class="dos_columnas">
+
+                <!-- Navegador de los diferentes datos personales-->
+                <div class="columna_links_datos">
+                    <div class="sub_columna_links">
+                        <div class="links">
+                            <ul>
+                                {% block navegador_datos_personales %}
+
+
+                                {% endblock %}
+                            </ul>
+                        </div>
+                        <div class="nota">
+                            <p style="margin-left: 10px;"><strong>Última confirmación: 05/05/2024</strong></p>
+                            <hr style="margin-top: -10px">
+                            <p style="margin-left: 10px">Los campos marcados con<strong>(*)</strong> son obligatorios.
+                                <br>
+                                <br>
+                            Una vez que hatas acutlizado tus datos, presioná el botón<strong>"Confirmar".</strong></p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Tabla de datos personales del usuario -->
+                <div class="columna_datos_personales">
+                    <div class="sub_columna_datos_personales">
+                        <div class="nota_alerta">
+                            <div class="sub_nota_alerta">Tus datos se encuentran vigentes. De todas maneras, si tenés
+                            algún dato para modificar, no olvides presionar el botón "Confirmar"
+                            al finalizar para indicar que se encuentran actualizados.</div>
+                        </div>
+
+                        <!--Formulario y datos del usuario-->
+                        <form method="post">{% csrf_token %}
+                            <div class="titulo_edicion_datos_personales">
+                                <h2 class="texto_gris" style="font-size: 24px; border: none">{% block titulo_pagina %}Datos personales{% endblock %}</h2>
+                            </div><br>
+
+                            <!-- Contenido específico de cada página -->
+                            {% block content %}
+
+                            {% endblock %}
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+    <script>
+        const cambioCorrecto = {{ cambio|lower }};
+
+        // Función para mostrar la alerta
+        if (cambioCorrecto) {
+             document.getElementById('alerta_texto').innerHTML = "Se guardó correctamente";
+            let alerta = document.getElementById("customAlert");
+            alerta.style.top = "0"; // Mover la alerta hacia abajo
+            alerta.style.background = '#DFF0D8';
+            alerta.style.color = '#55DE68';
+            alerta.style.borderColor = '#DAEBD3';
+            setTimeout(function() {
+                alerta.style.top = "-100px"; // Mover la alerta fuera de la pantalla
+            }, 5000); // 5000 milisegundos = 5 segundos
+        }
+
+        // Función para cerrar la alerta
+        function cerrarAlerta() {
+            let alerta = document.getElementById("customAlert");
+            alerta.style.top = "-100px"; // Mover la alerta fuera de la pantalla
+        }
+    </script><!-- El script de alerta si se cambiaron los datos -->
+    <script>
+        const sincambioCorrecto = {{ no_hay_cambio|lower }};
+        if(sincambioCorrecto){
+            document.getElementById('alerta_texto').innerHTML = "No hay cambios para guardar";
+            let alerta = document.getElementById("customAlert");
+            alerta.style.top = "0"; // Mover la alerta hacia abajo
+            setTimeout(function() {
+                alerta.style.top = "-100px"; // Mover la alerta fuera de la pantalla
+            }, 5000); // 5000 milisegundos = 5 segundos
+        }
+                // Función para cerrar la alerta
+        function cerrarAlerta() {
+            let alerta = document.getElementById("customAlert");
+            alerta.style.top = "-100px"; // Mover la alerta fuera de la pantalla
+        }
+</script><!--El script de alerta si no hubo cambios de datos-->
+
+    <!-- Scripts adicionales -->
+    {% block script %}
+
+    {% endblock %}
+</body>
+</html>
