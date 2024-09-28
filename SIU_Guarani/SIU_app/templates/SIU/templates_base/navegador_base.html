@@ -1,0 +1,129 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}SIU Guaraní{% endblock %}</title>
+    <link rel="icon" href="{% static 'SIU/imagenes/favicon.ico' %}">
+    <link rel="stylesheet" type="text/css" href="{% static 'SIU/css/navegadores/navegador_paginas.css' %}">
+    <link rel="stylesheet" type="text/css" href="{% static 'SIU/css/navegadores/navegador_alumno.css' %}">
+    <link rel="stylesheet" type="text/css" href="{% static 'SIU/css/inputs/inputs.css' %}">
+    <link rel="stylesheet" type="text/css" href="{% static 'SIU/css/inputs/boton.css' %}">
+    <link rel="stylesheet" type="text/css" href="{% static 'SIU/css/textos/texto_azul.css' %}">
+    <link rel="stylesheet" type="text/css" href="{% static 'SIU/css/textos/texto_gris.css' %}">
+    <link rel="stylesheet" type="text/css" href="{% static 'SIU/css/notas/alerta_inscripciones.css' %}">
+    <link rel="stylesheet" type="text/css" href="{% static 'SIU/css/cuerpo.css' %}">
+    <link rel="stylesheet" type="text/css" href="{% static 'SIU/css/alerta_inscripcion.css' %}">
+    <script src="{% static 'SIU/java_script/Opciones_alumno_navegador.js' %}"></script>
+    <script src="{% static 'SIU/java_script/BotonDarDeBajaMateria.js' %}"></script>
+</head>
+<style>
+    /* Estilo para la ventana emergente */
+    .custom-alert-notificacion {
+        position: fixed;
+        top: -100px; /* Inicialmente fuera de la pantalla */
+        left: 50%;
+        transform: translateX(-50%);
+        padding: 4px;
+        background-color: #D9EDF7;
+        border: 1px solid #ccc;
+        border-radius: 5px;
+        box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+        z-index: 9999;
+        transition: top 0.5s ease; /* Animación de entrada */
+        font-size: 14px;
+        color: #42ADE8;
+    }
+    /* Estilo para el botón de cerrar */
+    .custom-alert-notificacion .closebtn {
+        position: absolute;
+        top: 5px;
+        right: 10px;
+        cursor: pointer;
+    }
+
+    {% block style %}
+
+
+    {% endblock %}
+    a{
+        text-decoration: none;
+        color: black;
+    }
+
+    li{
+        list-style: none; /* Elimina las viñetas */
+    }
+
+    .lista_opciones_reportes{
+        background-clip: padding-box;
+        border: 1px solid rgba(0, 0, 0, 0.2);
+        border-radius: 6px;
+        box-shadow: rgba(0, 0, 0, 0.2) 0px 5px 10px 0px;
+        display: block;
+        float: none;
+        line-height: 20px;
+        margin-block-start: 2px;
+        margin-top: 2px;
+        padding-top: 5px;
+        padding-bottom: 5px;
+        position: absolute;
+        text-align: left;
+        top: 40px;
+        z-index: 1000;
+    }
+    .li_lista_opciones_reportes{
+        color: rgb(51, 51, 51);
+        display: list-item;
+        line-height: 20px;
+        line-style-position: outside;
+        text-align: left;
+        text-size-adjust: 100%;
+    }
+</style>
+<body>
+<!--La barra superior de navegador y configuracion -->
+    <div class="contenedor_alumno_principal">
+        <div class="sub_contenedor_alumno_principal">
+            <div class="logo_untdf">
+                <a href="{% url 'SIU:inicio_alumno' %}"><img src="{% static 'SIU/imagenes/logo-transparente.png' %}"></a>
+            </div>
+            <div class="datos_alumno">
+                <div class="opciones_alumno">
+                    <button onclick="mostrarOpciones_alumno()" class="boton-sin-contorno">{{ usuario.nombre }} {{ usuario.apellido }}</button>
+                    <ul id="lista_opciones_alumno" class="lista_opciones_reportes" style="display: none">
+                        <li class="li_lista_opciones_alumno"><a href="{% url 'SIU:configuracion' %}"> Configuración</a></li>
+                        <li class="li_lista_opciones_alumno"><a href="{% url 'SIU:cerrar_sesion' %}">Cerrar sesión</a></li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="navegador">
+        <div class="sub_navegador">
+            {% block navegador %}
+
+
+            {% endblock %}
+        </div>
+    </div>
+
+<!-- La alerta si falla algo -->
+    <div id="customAlert" class="custom-alert">
+        <span class="closebtn" onclick="cerrarAlerta()">&times;</span>
+        <p id="alerta_texto"></p>
+    </div>
+
+<!--Contenido de cada pagina-->
+    {% block content %}
+
+    {% endblock %}
+
+<!-- Scripts adicionales -->
+    {% block script %}
+
+    {% endblock %}
+</body>
+</html>
