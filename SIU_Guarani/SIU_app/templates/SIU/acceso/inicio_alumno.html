@@ -1,0 +1,550 @@
+{% extends 'SIU/templates_base/navegador_base.html' %}
+{% load static %}
+{% block title %}SIU Guaraní - Carreras{% endblock %}
+
+{% block style %}
+    .contenedor{
+        margin-left: auto;
+        margin-right: auto;
+        display: block;
+        height: 1010px;
+        text-size-adjust: 100%;
+        unicode-bidi: isolate;
+        width: 1170px;
+    }
+    .span12{
+        box-sizing: border-box;
+        display: block;
+        float: left;
+        height: 55px;
+        line-height: 20px;
+        margin-left: 0px;
+        min-height: 30px;
+        text-size-adjust: 100%;
+        unicode-bidi: isolate;
+        width: 1170px;
+    }
+    .sub_contenedor{
+        display: block;
+        height: 1010px;
+        line-height: 20px;
+        text-size-adjust: 100%;
+        unicode-bidi: isolate;
+        width: 1170px;
+    }
+
+    .columna_1{
+        box-sizing: border-box;
+        display: block;
+        float: left;
+        height: 1010px;
+        margin-left: 0px;
+        min-height: 30px;
+        text-size-adjust: 100%;
+        unicode-bidi: isolate;
+        width: 869.984px;
+    }
+
+    .no-ajax{
+        color: rgb(88, 177, 209);
+        cursor: pointer;
+        display: inline;
+        font-size: 18px;
+        font-weight: 700;
+        height: auto;
+        line-height: 24px;
+        text-decoration-color: rgb(88, 177, 209);
+        text-decoration-line: none;
+        text-decoration-style: solid;
+        text-decoration-thickness: auto;
+        text-rendering: optimizelegibility;
+        text-size-adjust: 100%;
+        width: auto;
+    }
+    .row_fluid{
+        color: rgb(51, 51, 51);
+        display: flex;
+        height: 966px;
+        text-size-adjust: 100%;
+        unicode-bidi: isolate;
+        width: 869.984px;
+    }
+
+    .span5{
+        box-sizing: border-box;
+        color: rgb(51, 51, 51);
+        display: block;
+        float: left;
+        height: 966px;
+        margin-left: 0px;
+        min-height: 30px;
+        text-size-adjust: 100%;
+        unicode-bidi: isolate;
+        width: 349.469px;
+    }
+
+    .pagelet{
+        clear: both;
+        color: rgb(51, 51, 51);
+        display: block;
+        height: 946px;
+        text-size-adjust: 100%;
+        unicode-bidi: isolate;
+        width: 349.469px;
+    }
+    .unstyled{
+        color: rgb(51, 51, 51);
+        display: block;
+        height: 897px;
+        list-style-position: outside;
+        margin-block-end: 10px;
+        margin-bottom: 10px;
+        text-size-adjust: 100%;
+        unicode-bidi: isolate;
+        width: 349.469px;
+        margin-left: 0;
+    }
+    li{
+        color: rgb(51, 51, 51);
+        display: list-item;
+        list-style-position: outside;
+        list-style-type: none;
+        text-align: left;
+        text-size-adjust: 100%;
+        unicode-bidi: isolate;
+        width: 349.469px;
+    }
+
+    .box_materia{
+        border-bottom: 1px solid rgb(229, 229, 229);
+        border-left: 1px solid rgb(229, 229, 229);
+        color: rgb(51, 51, 51);
+        display: block;
+        height: 260px;
+        list-style-image: none;
+        list-style-position: outside;
+        list-style-type: none;
+        margin-bottom: 25px;
+        margin-left: 15px;
+        padding-bottom: 10px;
+        text-align: left;
+        text-size-adjust: 100%;
+        unicode-bidi: isolate;
+        width: 323.469px;
+    }
+{% endblock %}
+
+{% block navegador %}
+    <button class="nueva_pagina"><a href="{% url 'SIU:materia' %}" class="salto_pagina_texto">Inscripción a Materias</a></button>
+    <button class="nueva_pagina"><a href="{% url 'SIU:examen' %}" class="salto_pagina_texto">Inscripción a Exámenes</a></button>
+    <div style="position: relative">
+        <button class="nueva_pagina salto_pagina_texto" onclick="mostrarOpciones_navegador()" >Reportes</button>
+        <ul id="lista_opciones_navegador" class="lista_opciones_reportes" style="display: none">
+            <li class="li_lista_opciones_reportes"><a href="{% url 'SIU:plan_estudio' %}">Plan de estudio</a></li>
+            <li class="li_lista_opciones_reportes"><a href="{% url 'SIU:inscripciones' %}">Mis inscripciones</a></li>
+            <li class="li_lista_opciones_reportes"><a href="{% url 'SIU:porcentaje_avance_carrera' %}">Promedio y porcentaje de avance en la carrera</a></li>
+        </ul>
+    </div>
+    <button class="nueva_pagina"><a href="{% url 'SIU:datos_censales' %}" class="salto_pagina_texto">Mis datos personales</a> </button>
+{% endblock %}
+
+{% block content %}
+    <link rel="stylesheet" type="text/css" href="{% static 'SIU/css/calendario.css' %}">
+    <div class="contenedor">
+        <div class="span12">
+            <h2 class="texto_azul">{{ usuario.nombre }} {{ usuario.apellido }}</h2>
+        </div>
+        <div class="sub_contenedor">
+            <div class="columna_1">
+                <h3 class="texto_gris" style="border-bottom: none">
+                     Para ver la oferta del Campus Virtual Universitario Nacional,
+                    <a class="no-ajax" target="_blank" href="https://campusvirtual.cin.edu.ar/">hacé click acá</a>
+                </h3>
+                <div class="row_fluid">
+                    <div class="span5">
+                        <div class="pagelet">
+                            <ul class="unstyled">
+                                <h3>Períodos lectivos</h3>
+                                <li>
+                                    <h4>1/2024 PG</h4>
+                                    <div class="box_materia">
+                                        <ul>
+                                            <li>
+                                                <strong>Tipo: </strong>
+                                                <span>cuatrimestre</span>
+                                            </li>
+                                            <li>
+                                                <strong>Fechas del período lectivo: </strong>
+                                            </li>
+                                            <ul>
+                                                <li>
+                                                    <strong>Inicio: </strong>
+                                                    <span>11/03/2024</span>
+                                                </li>
+                                                <li>
+                                                    <strong>Finalización: </strong>
+                                                    <span>29/06/2024</span>
+                                                </li>
+                                            </ul>
+                                            <li>
+                                                <strong>Período de inscripción #1: </strong>
+                                            </li>
+                                            <ul>
+                                                <li>
+                                                    <strong>Inicio: </strong>
+                                                    <span>27/02/2024</span>
+                                                </li>
+                                                <li>
+                                                    <strong>Finalización: </strong>
+                                                    <span>01/03/2024</span>
+                                                </li>
+                                            </ul>
+                                            <li>
+                                                <strong>Período de inscripción #2: </strong>
+                                            </li>
+                                            <ul>
+                                                <li>
+                                                    <strong>Inicio: </strong>
+                                                    <span>22/04/2024</span>
+                                                </li>
+                                                <li>
+                                                    <strong>Finalización: </strong>
+                                                    <span>24/04/2024</span>
+                                                </li>
+                                            </ul>
+                                        </ul>
+                                    </div>
+                                </li>
+                                <li>
+                                    <h4>2024 PG</h4>
+                                    <div class="box_materia">
+                                        <ul>
+                                            <li>
+                                                <strong>Tipo: </strong>
+                                                <span>anual</span>
+                                            </li>
+                                            <li>
+                                                <strong>Fechas del período lectivo: </strong>
+                                            </li>
+                                            <ul>
+                                                <li>
+                                                    <strong>Inicio: </strong>
+                                                    <span>11/03/2024</span>
+                                                </li>
+                                                <li>
+                                                    <strong>Finalización: </strong>
+                                                    <span>30/11/2024</span>
+                                                </li>
+                                            </ul>
+                                            <li>
+                                                <strong>Período de inscripción #1: </strong>
+                                            </li>
+                                            <ul>
+                                                <li>
+                                                    <strong>Inicio: </strong>
+                                                    <span>27/02/2024</span>
+                                                </li>
+                                                <li>
+                                                    <strong>Finalización: </strong>
+                                                    <span>01/03/2024</span>
+                                                </li>
+                                            </ul>
+                                            <li>
+                                                <strong>Período de inscripción #2: </strong>
+                                            </li>
+                                            <ul>
+                                                <li>
+                                                    <strong>Inicio: </strong>
+                                                    <span>22/04/2024</span>
+                                                </li>
+                                                <li>
+                                                    <strong>Finalización: </strong>
+                                                    <span>24/04/2024</span>
+                                                </li>
+                                            </ul>
+                                        </ul>
+                                    </div>
+                                </li>
+                                <li>
+                                    <h4>2/2024 PG</h4>
+                                    <div class="box-materia">
+                                        <ul>
+                                            <li>
+                                                <strong>Tipo: </strong>
+                                                <span>cuatrimestre</span>
+                                            </li>
+                                            <li>
+                                                <strong>Fechas del período lectivo: </strong>
+                                            </li>
+                                            <ul>
+                                                <li>
+                                                    <strong>Inicio: </strong>
+                                                    <span>12/08/2024</span>
+                                                </li>
+                                                <li>
+                                                    <strong>Finalización: </strong>
+                                                    <span>30/11/2024</span>
+                                                </li>
+                                            </ul>
+                                            <li>
+                                                <strong>Período de inscripción #1: </strong>
+                                            </li>
+                                            <ul>
+                                                <li>
+                                                    <strong>Inicio: </strong>
+                                                    <span>01/08/2024</span>
+                                                </li>
+                                                <li>
+                                                    <strong>Finalización: </strong>
+                                                    <span>05/08/2024</span>
+                                                </li>
+                                            </ul>
+                                        </ul>
+                                    </div>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                    <div class="span7">
+                        <div class="pagelet" style="display: block; clear: both;">
+                            <ul class="unstyled">
+                                <h3>Encuestas pendientes</h3>
+                                <div class="nota_alerta" style="width: 470px; height: 35px">
+                                    No hay encuestas pendientes para completar
+                                </div>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="columna_2">
+                <div class="notificaciones">
+                    <h3>Inscripciones</h3>
+                    <select class="select">
+                        <option value="quincena">Quincena</option>
+                        <option value="mes">Mes</option>
+                        <option value="trimestre">Trimestre</option>
+                        <option value="cuatrimestre" selected="">Cuatrimestre</option>
+                        <option value="semestre">Semestre</option>
+                    </select>
+
+                    <div class="calendarios">
+                        <div class="sub_calendarios">
+                            <div class="items">
+                                <div class="panel_actividad">
+                                    <div class="periodo">
+                                        <h4>Enero - Abril</h4>
+                                        <div class="tabla">
+                                            <div class="fila">
+                                                <div class="tit_lateral">
+
+                                                </div>
+                                                <div class="celda">
+                                                    <span>lu</span>
+                                                </div>
+                                                <div class="celda">
+                                                    <span>ma</span>
+                                                </div>
+                                                <div class="celda">
+                                                    <span>mi</span>
+                                                </div>
+                                                <div class="celda">
+                                                    <span>ju</span>
+                                                </div>
+                                                <div class="celda">
+                                                    <span>vi</span>
+                                                </div>
+                                                <div class="celda">
+                                                    <span>sa</span>
+                                                </div>
+                                            </div>
+                                            <div class="fila">
+                                                <div class=" celda tit_lateral" style="width: 49px">
+                                                    <span>0 - 8 hs</span>
+                                                </div>
+                                                <div class="celda">
+                                                    <span></span>
+                                                </div>
+                                                <div class="celda">
+                                                    <span></span>
+                                                </div>
+                                                <div class="celda">
+                                                    <span></span>
+                                                </div>
+                                                <div class="celda">
+                                                    <span></span>
+                                                </div>
+                                                <div class="celda">
+                                                    <span></span>
+                                                </div>
+                                                <div class="celda">
+                                                    <span></span>
+                                                </div>
+                                            </div>
+                                            <div class="fila">
+                                                <div class=" celda tit_lateral" style="width: 49px">
+                                                    <span>8 - 16 hs</span>
+                                                </div>
+                                                <div class="celda">
+                                                    <span></span>
+                                                </div>
+                                                <div class="celda">
+                                                    <span></span>
+                                                </div>
+                                                <div class="celda">
+                                                    <span></span>
+                                                </div>
+                                                <div class="celda">
+                                                    <span></span>
+                                                </div>
+                                                <div class="celda">
+                                                    <span></span>
+                                                </div>
+                                                <div class="celda">
+                                                    <span></span>
+                                                </div>
+                                            </div>
+                                            <div class="fila">
+                                                <div class=" celda tit_lateral" style="width: 49px">
+                                                    <span>16 - 24 hs</span>
+                                                </div>
+                                                <div class="celda">
+                                                    <span></span>
+                                                </div>
+                                                <div class="celda">
+                                                    <span></span>
+                                                </div>
+                                                <div class="celda">
+                                                    <span></span>
+                                                </div>
+                                                <div class="celda">
+                                                    <span></span>
+                                                </div>
+                                                <div class="celda">
+                                                    <span></span>
+                                                </div>
+                                                <div class="celda">
+                                                    <span></span>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="periodo">
+                                        <h4>Mayo - Agosto</h4>
+                                        <div class="tabla">
+                                            <div class="fila">
+                                                <div class="tit_lateral">
+
+                                                </div>
+                                                <div class="celda">
+                                                    <span>lu</span>
+                                                </div>
+                                                <div class="celda">
+                                                    <span>ma</span>
+                                                </div>
+                                                <div class="celda">
+                                                    <span>mi</span>
+                                                </div>
+                                                <div class="celda">
+                                                    <span>ju</span>
+                                                </div>
+                                                <div class="celda">
+                                                    <span>vi</span>
+                                                </div>
+                                                <div class="celda">
+                                                    <span>sa</span>
+                                                </div>
+                                            </div>
+                                            <div class="fila">
+                                                <div class=" celda tit_lateral" style="width: 49px">
+                                                    <span>0 - 8 hs</span>
+                                                </div>
+                                                <div class="celda">
+                                                    <span></span>
+                                                </div>
+                                                <div class="celda">
+                                                    <span></span>
+                                                </div>
+                                                <div class="celda">
+                                                    <span></span>
+                                                </div>
+                                                <div class="celda">
+                                                    <span></span>
+                                                </div>
+                                                <div class="celda">
+                                                    <span></span>
+                                                </div>
+                                                <div class="celda">
+                                                    <span></span>
+                                                </div>
+                                            </div>
+                                            <div class="fila">
+                                                <div class=" celda tit_lateral" style="width: 49px">
+                                                    <span>8 - 16 hs</span>
+                                                </div>
+                                                <div class="celda">
+                                                    <span></span>
+                                                </div>
+                                                <div class="celda">
+                                                    <span></span>
+                                                </div>
+                                                <div class="celda">
+                                                    <span></span>
+                                                </div>
+                                                <div class="celda">
+                                                    <span></span>
+                                                </div>
+                                                <div class="celda">
+                                                    <span></span>
+                                                </div>
+                                                <div class="celda">
+                                                    <span></span>
+                                                </div>
+                                            </div>
+                                            <div class="fila">
+                                                <div class=" celda tit_lateral" style="width: 49px">
+                                                    <span>16 - 24 hs</span>
+                                                </div>
+                                                <div class="celda">
+                                                    <span></span>
+                                                </div>
+                                                <div class="celda">
+                                                    <span></span>
+                                                </div>
+                                                <div class="celda">
+                                                    <span></span>
+                                                </div>
+                                                <div class="celda">
+                                                    <span></span>
+                                                </div>
+                                                <div class="celda">
+                                                    <span></span>
+                                                </div>
+                                                <div class="celda">
+                                                    <span></span>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="periodo_materias">
+                                        <h4 class="texto_gris">Materias:</h4>
+                                        <div style="height: auto">
+                                            <ul style="text-align: left">
+                                                {% for materia in usuario_cursada %}
+                                                    <li>{{ materia }}</li>
+                                                {% endfor %}
+                                            </ul>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <hr>
+                    <h3>Inscripción a exámenes</h3>
+                    <p style="color: rgb(51, 51, 51)">Los exámenes a los que te inscribas aparecerán aquí.</p>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}
