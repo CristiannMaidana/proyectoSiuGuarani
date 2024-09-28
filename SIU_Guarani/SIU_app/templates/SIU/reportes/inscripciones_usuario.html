@@ -1,0 +1,385 @@
+{% extends 'SIU/templates_base/navegador_base.html' %}
+
+{% block title %}SIU Guaraní - Mis inscripciones{% endblock %}
+
+{% block style %}
+    .contenedor_inscripciones {
+        width: 1170px;
+        height: auto; /* Ajuste automático del alto */
+        display: flex;
+        margin-left: auto;
+        margin-right: auto;
+        align-items: center;
+        justify-content: center;
+        flex-direction: column; /* Cambio a columna para alineación vertical */
+    }
+
+    .sub_contenedor_inscripciones {
+        width: 1170px;
+        height: auto; /* Ajuste automático del alto */
+        margin-left: auto;
+        margin-right: auto;
+        align-items: center;
+        justify-content: center;
+    }
+
+    .cursada_vigente {
+        width: 1170px;
+        height: auto; /* Ajuste automático del alto */
+    }
+
+    .sub_cursada_vigente {
+        width: 1170px;
+        height: auto; /* Ajuste automático del alto */
+    }
+
+    .contenedor_inscripciones_examenes{
+        width: 1170px;
+        height: 400px;
+        display: flex;
+        margin-left: auto; /* Margen izquierdo automático */
+        margin-right: auto; /* Margen derecho automático */
+        align-items: center;
+        justify-content: center;
+    }
+
+    .sub_contenedor_inscripciones_examenes{
+        width: 1170px;
+        height: 385px;
+        margin-left: auto; /* Margen izquierdo automático */
+        margin-right: auto; /* Margen derecho automático */
+        align-items: center;
+        justify-content: center;
+    }
+
+    .th_uno, .th_dos, .th_tres, .th_cuatro, .th_cinco, .th_seis, .th_siete, .th_ocho, .th_nueve, .th_diez {
+        color: #F6FFFF;
+    }
+
+    .th_uno { width: 102px; }
+    .th_dos { width: 40px; }
+    .th_tres { width: 83px; }
+    .th_cuatro { width: 121px; }
+    .th_cinco { width: 201px; }
+    .th_seis { width: 99px; }
+    .th_siete { width: 93px; }
+    .th_ocho { width: 58px; }
+    .th_nueve { width: 65px; }
+    .th_diez { width: 84px; }
+
+
+    table {
+        border-collapse: collapse; /* Fusiona los bordes de las celdas adyacentes */
+    }
+    th{
+        background: #707070;
+        border: 1px solid black;
+    }
+    td{
+        background: #EEEEEE;
+        font-size: 14px;
+        border: 1px solid black;
+        text-align: center;
+    }
+    tr{
+        height: 48px;
+    }
+
+    #tabla_historial_materias, #tabla_historial_examenes {
+        display: none;
+    }
+{% endblock %}
+
+
+{% block navegador %}
+    <button class="nueva_pagina"><a href="{% url 'SIU:materia' %}" class="salto_pagina_texto">Inscripción a Materias</a></button>
+    <button class="nueva_pagina"><a href="{% url 'SIU:examen' %}" class="salto_pagina_texto">Inscripción a Exámenes</a></button>
+    <div style="position: relative">
+        <button class="pagina_actual pagina_actual_texto" style="color: white" onclick="mostrarOpciones_navegador()" >Reportes</button>
+        <ul id="lista_opciones_navegador" class="lista_opciones_reportes" style="display: none">
+            <li class="li_lista_opciones_reportes"><a href="{% url 'SIU:plan_estudio' %}">Plan de estudio</a></li>
+            <li class="li_lista_opciones_reportes"><a href="{% url 'SIU:inscripciones' %}">Mis inscripciones</a></li>
+            <li class="li_lista_opciones_reportes"><a href="{% url 'SIU:porcentaje_avance_carrera' %}">Promedio y porcentaje de avance en la carrera</a></li>
+        </ul>
+    </div>
+    <button class="nueva_pagina"><a href="{% url 'SIU:datos_censales' %}" class="salto_pagina_texto">Mis datos personales</a> </button>
+{% endblock %}
+
+{% block content %}
+
+    {% if inscripciones_alumno_materias %}
+        <div class="contenedor_inscripciones">
+            <div class="sub_contenedor_inscripciones">
+                <h1 class="texto_azul">Mis inscripciones</h1>
+                <div class="cursada_vigente">
+                    <div class="sub_cursada_vigente">
+                        <h4 class="texto_gris">Cursadas -
+                            <span class="texto_azul" style="border-bottom: none">Periodos lectivos vigentes</span>
+                        </h4>
+                        <input type="checkbox" id="mostrar_tabla_materias" onchange="mostrarTablaMaterias()">
+                        <label for="mostrar_tabla_materias" >Inscripciones históricas</label>
+
+                        <!--Tabla que muestra todas las materias regulares inscriptas historicas del alumno-->
+                        <table id="tabla_historial_materias">
+                            <thead>
+                                <tr>
+                                    <th class="th_uno">Fecha Inscripción</th>
+                                    <th class="th_dos">Año</th>
+                                    <th class="th_tres">Periodo lectivo</th>
+                                    <th class="th_cuatro">Propuesta</th>
+                                    <th class="th_cinco">Actividad</th>
+                                    <th class="th_seis">Comisión</th>
+                                    <th class="th_siete">Subcomisión</th>
+                                    <th class="th_ocho">Turno</th>
+                                    <th class="th_ocho">Catedra</th>
+                                    <th class="th_nueve">Ubicacion</th>
+                                    <th class="th_diez">Estado</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {% for inscripcion in inscripciones_alumno_materias %}
+                                    <tr>
+                                        <td>{{ inscripcion.fecha}} </td>
+                                        <td>2024</td>
+                                        <td>1/2024 PG</td>
+                                        <td>{{ usuario.id_carrera.nombre_carrera }}</td>
+                                        <td>{{ inscripcion.id_cursada_alumno.id_materia_con_parcial.id_materia.nombre_materia }}</td>
+                                        <td></td>
+                                        <td>Sin definir</td>
+                                        <td>Sin definir</td>
+                                        <td>Sin definir</td>
+                                        <td>{{ usuario.id_direccion.localida }}</td>
+                                        {% if inscripcion.id_cursada_alumno.aprobo %}
+                                            <td>Aprobado</td>
+                                        {% elif not inscripcion.id_cursada_alumno.aprobo and not inscripcion.id_cursada_alumno.inscripto %}
+                                            <td>Desaprobado</td>
+                                        {% elif inscripcion.id_cursada_alumno.inscripto %}
+                                            <td>Aceptado</td>
+                                        {% endif %}
+                                    </tr>
+                                {% endfor %}
+                            </tbody>
+                        </table>
+
+                        <!--Tabla que muestra solo las materias regulares inscriptas en el periodo lectivo-->
+                        {% if inscripciones_materia_activas %}
+                            <table id="tabla_actual_materias">
+                                <thead>
+                                    <tr>
+                                        <th class="th_uno">Fecha Inscripción</th>
+                                        <th class="th_dos">Año</th>
+                                        <th class="th_tres">Periodo lectivo</th>
+                                        <th class="th_cuatro">Propuesta</th>
+                                        <th class="th_cinco">Actividad</th>
+                                        <th class="th_seis">Comisión</th>
+                                        <th class="th_siete">Subcomisión</th>
+                                        <th class="th_ocho">Turno</th>
+                                        <th class="th_ocho">Catedra</th>
+                                        <th class="th_nueve">Ubicacion</th>
+                                        <th class="th_diez">Estado</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    {% for inscripcion in inscripciones_alumno_materias %}
+                                        {% if inscripcion.id_cursada_alumno.inscripto %}
+                                            <tr>
+                                                <td>{{ inscripcion.fecha}} </td>
+                                                <td>2024</td>
+                                                <td>1/2024 PG</td>
+                                                <td>{{ usuario.id_carrera.nombre_carrera }}</td>
+                                                <td>{{ inscripcion.id_cursada_alumno.id_materia_con_parcial.id_materia.nombre_materia }}</td>
+                                                <td></td>
+                                                <td>Sin definir</td>
+                                                <td>Sin definir</td>
+                                                <td>Sin definir</td>
+                                                <td>{{ usuario.id_direccion.localida }}</td>
+                                                {% if inscripcion.id_cursada_alumno.aprobo %}
+                                                    <td>Aprobado</td>
+                                                {% elif not inscripcion.id_cursada_alumno.aprobo and not inscripcion.id_cursada_alumno.inscripto %}
+                                                    <td>Desaprobado</td>
+                                                {% elif inscripcion.id_cursada_alumno.inscripto %}
+                                                    <td>Aceptado</td>
+                                                {% endif %}
+                                            </tr>
+                                        {% endif %}
+                                    {% endfor %}
+                                </tbody>
+                            </table>
+                        {% endif %}
+                    </div>
+                </div>
+            </div>
+        </div>
+    {% else %}
+        <div class="contenedor_inscripciones">
+            <div class="sub_contenedor_inscripciones">
+                <h1 class="texto_azul">Mis inscripciones</h1>
+                <div class="cursada_vigente">
+                    <div class="sub_cursada_vigente">
+                        <h4 class="texto_gris">Cursadas -
+                            <span class="texto_azul" style="border-bottom: none">Periodos lectivos vigentes</span>
+                        </h4>
+                        <input type="checkbox" id="mostrar_tabla_materias" onchange="mostrarTablaMaterias()">
+                        <label for="mostrar_tabla_materias" >Inscripciones históricas</label>
+                    </div>
+                </div>
+            </div>
+        </div>
+    {% endif %}<br><br><br>
+
+    {% if inscripciones_alumno_examenes %}
+        <div class="contenedor_inscripciones_examenes">
+            <div class="sub_contenedor_inscripciones_examenes">
+                <div class="cursada_vigente">
+                    <div class="sub_cursada_vigente">
+                        <h4 class="texto_gris">Exámenes -
+                            <span class="texto_azul" style="border-bottom: none">Turnos de exámenes vigentes</span>
+                        </h4>
+                        <input type="checkbox" id="mostrar_tabla_examenes" onchange="mostrarTablaExamenes()">
+                        <label for="mostrar_tabla_examenes">Inscripciones históricas</label>
+
+                        <!--Tabla que muestra todas los examenes inscriptos historicos del alumno-->
+                        <div id="tabla_historial_examenes">
+                            <table >
+                                <thead>
+                                    <tr>
+                                        <th class="th_uno">Fecha Inscripción (?)</th>
+                                        <th class="th_dos">Año</th>
+                                        <th class="th_tres">Turno</th>
+                                        <th class="th_cuatro">Llamado</th>
+                                        <th class="th_cinco">Propuesta</th>
+                                        <th class="th_seis">Actividad</th>
+                                        <th class="th_siete">Mesa</th>
+                                        <th class="th_ocho">Ubicación</th>
+                                        <th class="th_nueve">Lugar</th>
+                                        <th class="th_diez">Fecha de examen</th>
+                                        <th class="th_diez">Estado</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    {% for inscripcion in inscripciones_alumno_examenes %}
+                                        <tr>
+                                            <td>{{ inscripcion.fecha }} </td>
+                                            <td>2024</td>
+                                            <td>?</td>
+                                            <td>?</td>
+                                            <td>{{ usuario.id_carrera.nombre_carrera }}</td>
+                                            <td>{{ inscripcion.id_examen_alumno.id_materia_con_examen.id_materia.nombre_materia }}</td>
+                                            <td></td>
+                                            <td>Sede Ushuaia</td>
+                                            <td></td>
+                                            <td> {{ inscripcion.id_examen_alumno.fecha }}</td>
+                                            {% if inscripcion.id_examen_alumno.aprobo %}
+                                                <td>Aprobado</td>
+                                            {% elif not inscripcion.id_examen_alumno.aprobo and not inscripcion.id_examen_alumno.inscripto  %}
+                                                <td>Desaprobado</td>
+                                            {% elif inscripcion.id_examen_alumno.inscripto %}
+                                                <td>Aceptado</td>
+                                            {% endif %}
+                                        </tr>
+                                    {% endfor %}
+                                </tbody>
+                            </table>
+                        </div>
+
+                        <!--Tabla que muestra solo los examenes inscriptos en el periodo lectivo-->
+                        {% if inscripciones_examenes_activas %}
+                            <div id="tabla_actual_examenes">
+                                <table>
+                                    <thead>
+                                        <tr>
+                                            <th class="th_uno">Fecha Inscripción (?)</th>
+                                            <th class="th_dos">Año</th>
+                                            <th class="th_tres">Turno</th>
+                                            <th class="th_cuatro">Llamado</th>
+                                            <th class="th_cinco">Propuesta</th>
+                                            <th class="th_seis">Actividad</th>
+                                            <th class="th_siete">Mesa</th>
+                                            <th class="th_ocho">Ubicación</th>
+                                            <th class="th_nueve">Lugar</th>
+                                            <th class="th_diez">Fecha de examen</th>
+                                            <th class="th_diez">Estado</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        {% for inscripcion in inscripciones_alumno_examenes %}
+                                            {% if inscripcion.id_examen_alumno.inscripto %}
+                                                <tr>
+                                                    <td>{{ inscripcion.fecha }} </td>
+                                                    <td>2024</td>
+                                                    <td>?</td>
+                                                    <td>?</td>
+                                                    <td>{{ usuario.id_carrera.nombre_carrera }}</td>
+                                                    <td>{{ inscripcion.id_examen_alumno.id_materia_con_examen.id_materia.nombre_materia }}</td>
+                                                    <td></td>
+                                                    <td>Sede Ushuaia</td>
+                                                    <td></td>
+                                                    <td> {{ inscripcion.id_examen_alumno.fecha }}</td>
+                                                    {% if inscripcion.id_examen_alumno.aprobo %}
+                                                        <td>Aprobado</td>
+                                                    {% elif not inscripcion.id_examen_alumno.aprobo and not inscripcion.id_examen_alumno.inscripto  %}
+                                                        <td>Desaprobado</td>
+                                                    {% elif inscripcion.id_examen_alumno.inscripto %}
+                                                        <td>Aceptado</td>
+                                                    {% endif %}
+                                                </tr>
+                                            {% endif %}
+                                        {% endfor %}
+                                    </tbody>
+                                </table>
+                            </div>
+                        {% endif %}
+                    </div>
+                </div>
+            </div>
+        </div>
+    {% else %}
+        <div class="contenedor_inscripciones_examenes">
+            <div class="sub_contenedor_inscripciones_examenes">
+                <div class="cursada_vigente">
+                    <div class="sub_cursada_vigente">
+                        <h4 class="texto_gris">Exámenes -
+                            <span class="texto_azul" style="border-bottom: none">Turnos de exámenes vigentes</span>
+                        </h4>
+                        <input type="checkbox" id="mostrar_tabla_examenes" onchange="mostrarTablaExamenes()">
+                        <label for="mostrar_tabla_examenes">Inscripciones históricas</label>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    {% endif %}
+
+<script>
+    function mostrarTablaMaterias() {
+        let checkbox = document.getElementById('mostrar_tabla_materias');
+        let tablaHistorialMaterias = document.getElementById('tabla_historial_materias');
+        let tablaActualMaterias = document.getElementById('tabla_actual_materias');
+
+        if (checkbox.checked) {
+            tablaHistorialMaterias.style.display = 'table-row-group';
+            tablaActualMaterias.style.display = 'none';
+        } else {
+            tablaHistorialMaterias.style.display = 'none';
+            tablaActualMaterias.style.display = 'table-row-group';
+            tablaActualMaterias.style.display = 'block';
+        }
+    }
+</script>
+<script>
+    function mostrarTablaExamenes() {
+        let checkbox = document.getElementById('mostrar_tabla_examenes');
+        let tablaHistorialExamenes = document.getElementById('tabla_historial_examenes');
+        let tablaActualExamenes = document.getElementById('tabla_actual_examenes');
+
+        if (checkbox.checked) {
+            tablaHistorialExamenes.style.display = 'table-row-group';
+            tablaActualExamenes.style.display = 'none';
+        } else {
+            tablaHistorialExamenes.style.display = 'none';
+            tablaActualExamenes.style.display = 'table-row-group';
+            tablaActualExamenes.style.display = 'block';
+        }
+    }
+</script>
+{% endblock %}
