@@ -1,0 +1,42 @@
+{% extends 'SIU/templates_base/datos_personales_base.html' %}
+
+{% block title %}SIU Guaraní - Datos censales{% endblock %}
+
+{% block style %}
+    .tabla_discapacidad{
+        width: 870px;
+        height: 102px;
+        border-radius: 5px;
+        background: #F5F5F5;
+        border: 1px solid #E3E3E3;
+    }
+    .condicion_discapacidad{
+        width: 848px;
+        height: 45px;
+    }
+{% endblock %}
+
+{% block titulo_pagina %}Discapacidad{% endblock %}
+
+{% block navegador_datos_personales %}
+        <li><a href="{% url 'SIU:datos_censales' %}" class="li_links">Datos personales</a></li>
+        <li><a href="{% url 'SIU:domicilio' %}" class="li_links">Domicilio</a></li>
+        <li><a href="{% url 'SIU:datos_contacto' %}" class="li_links">Datos de contacto</a></li>
+        <li><a href="{{ url_estudios }}" class="li_links">Estudios</a></li>
+        <li><a href="{{ url_allegados }}" class="li_links">Allegados</a></li>
+        <li id="pagina_actual_links"><a href="{% url 'SIU:discapacidad' %}" class="pagina_actual_texto">Discapacidad</a></li>
+{% endblock %}
+
+{% block content %}
+        <div class="tabla_discapacidad ">
+            <h3 class="texto_gris">Condición de Discapacidad</h3>
+            <div class="condicion_discapacidad ">
+                <form method="post">
+                    <input type="checkbox" id="mi_checkbox" name="checkbox_no_tiene">
+                    <label for="mi_checkbox">No presento ninguna condición que implique Discapacidad</label><br>
+                    <input type="checkbox" id="mi_checkbox_discapacidad" name="checkbox_si_tiene">
+                    <label for="mi_checkbox_discapacidad">Declaro condición de discapacidad</label>
+                </form>
+            </div>
+        </div>
+{% endblock %}
