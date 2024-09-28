@@ -1,0 +1,15 @@
+.nota_alerta{
+    width: 870px;
+    height: 58px;
+    background: #FCF8E3;
+    display: flex;
+    border-radius: 5px;
+    border: 1px solid #FBEED5;
+    align-items: center;
+    justify-content: center;
+}
+.sub_nota_alerta{
+    width: 650px;
+    height: 40px;
+    text-align: center;
+}
